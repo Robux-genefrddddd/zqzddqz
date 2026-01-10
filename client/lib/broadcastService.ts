@@ -95,9 +95,7 @@ export async function markBroadcastMessageAsRead(
 ): Promise<void> {
   try {
     const docRef = doc(db, BROADCAST_COLLECTION, messageId);
-    const docSnap = await getDocs(
-      query(collection(db, BROADCAST_COLLECTION)),
-    );
+    const docSnap = await getDocs(query(collection(db, BROADCAST_COLLECTION)));
 
     const message = docSnap.docs.find((d) => d.id === messageId);
     if (message) {

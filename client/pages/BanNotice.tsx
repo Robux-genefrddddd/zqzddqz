@@ -54,7 +54,9 @@ export default function BanNotice() {
       <div className="min-h-screen bg-black flex items-center justify-center p-4">
         <div className="text-center space-y-4">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
-          <p className="text-gray-400 text-sm">Loading account information...</p>
+          <p className="text-gray-400 text-sm">
+            Loading account information...
+          </p>
         </div>
       </div>
     );
@@ -120,7 +122,8 @@ export default function BanNotice() {
                       : "Account Warning"}
                 </h1>
                 <p className="text-sm text-gray-400 mt-1">
-                  Account Status: {isBan ? "Permanently Disabled" : "Temporarily Suspended"}
+                  Account Status:{" "}
+                  {isBan ? "Permanently Disabled" : "Temporarily Suspended"}
                 </p>
               </div>
             </div>
@@ -132,7 +135,9 @@ export default function BanNotice() {
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
                 Reason
               </p>
-              <p className="text-gray-100 text-sm leading-relaxed">{warning.reason}</p>
+              <p className="text-gray-100 text-sm leading-relaxed">
+                {warning.reason}
+              </p>
             </div>
 
             {warning.details && (
@@ -174,7 +179,10 @@ export default function BanNotice() {
           {isSuspension && canReactivateDate ? (
             <div className="bg-gradient-to-br from-yellow-900/20 to-yellow-800/20 border border-yellow-700/40 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <Calendar size={18} className="text-yellow-500 mt-0.5 flex-shrink-0" />
+                <Calendar
+                  size={18}
+                  className="text-yellow-500 mt-0.5 flex-shrink-0"
+                />
                 <div>
                   <p className="text-xs font-bold text-yellow-600 uppercase tracking-wider mb-1">
                     Account Reactivation Date
@@ -186,7 +194,10 @@ export default function BanNotice() {
           ) : isBan ? (
             <div className="bg-gradient-to-br from-red-900/20 to-red-800/20 border border-red-700/40 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <AlertTriangle size={18} className="text-red-500 mt-0.5 flex-shrink-0" />
+                <AlertTriangle
+                  size={18}
+                  className="text-red-500 mt-0.5 flex-shrink-0"
+                />
                 <div>
                   <p className="text-xs font-bold text-red-600 uppercase tracking-wider mb-1">
                     Permanent Ban
@@ -203,7 +214,10 @@ export default function BanNotice() {
           {/* Appeal Section */}
           <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <FileText size={18} className="text-gray-400 mt-0.5 flex-shrink-0" />
+              <FileText
+                size={18}
+                className="text-gray-400 mt-0.5 flex-shrink-0"
+              />
               <div>
                 <p className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-1">
                   Need Help?
@@ -230,8 +244,8 @@ export default function BanNotice() {
 
         {/* Footer Info */}
         <p className="text-center text-xs text-gray-600 px-4 leading-relaxed">
-          If you have questions about this action or would like to appeal, please
-          contact our support team at support@example.com
+          If you have questions about this action or would like to appeal,
+          please contact our support team at support@example.com
         </p>
       </div>
     </div>

@@ -412,8 +412,7 @@ export function UserDetailModal({
         {/* Footer Actions */}
         <div className="border-t border-border/20 p-6 bg-card space-y-3">
           {!user.isBanned &&
-            (user.role !== "founder" ||
-              currentUserRole === "founder") &&
+            (user.role !== "founder" || currentUserRole === "founder") &&
             (user.role !== "admin" ||
               currentUserRole === "founder" ||
               currentUserRole === "admin") && (
@@ -428,8 +427,7 @@ export function UserDetailModal({
               </Button>
             )}
 
-          {(user.role !== "founder" ||
-            currentUserRole === "founder") &&
+          {(user.role !== "founder" || currentUserRole === "founder") &&
             (user.role !== "admin" ||
               currentUserRole === "founder" ||
               currentUserRole === "admin") && (

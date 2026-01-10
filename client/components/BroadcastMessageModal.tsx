@@ -128,9 +128,7 @@ export function BroadcastMessageModal({
 
           {/* Recipient Type */}
           <div>
-            <label className="block text-sm font-medium mb-3">
-              Send To
-            </label>
+            <label className="block text-sm font-medium mb-3">Send To</label>
             <div className="space-y-2">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
@@ -194,11 +192,7 @@ export function BroadcastMessageModal({
 
         {/* Footer */}
         <div className="border-t border-border/20 p-6 bg-card space-y-3 sticky bottom-0">
-          <Button
-            onClick={handleSend}
-            disabled={sending}
-            className="w-full"
-          >
+          <Button onClick={handleSend} disabled={sending} className="w-full">
             <Send size={16} className="mr-2" />
             {sending ? "Sending..." : "Send Message"}
           </Button>

@@ -59,9 +59,7 @@ export function WarningNotificationModal() {
             ) : (
               <AlertTriangle
                 size={24}
-                className={
-                  isSuspension ? "text-yellow-500" : "text-blue-500"
-                }
+                className={isSuspension ? "text-yellow-500" : "text-blue-500"}
               />
             )}
           </div>
@@ -89,13 +87,18 @@ export function WarningNotificationModal() {
               <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
                 Details
               </p>
-              <p className="text-sm text-foreground/90">{latestWarning.details}</p>
+              <p className="text-sm text-foreground/90">
+                {latestWarning.details}
+              </p>
             </div>
           )}
 
           {latestWarning.expiresAt && (
             <div className="flex items-center gap-2 text-sm p-3 bg-secondary/40 border border-border/30 rounded-lg">
-              <Clock size={16} className="text-muted-foreground flex-shrink-0" />
+              <Clock
+                size={16}
+                className="text-muted-foreground flex-shrink-0"
+              />
               <span className="text-foreground/80">
                 {latestWarning.type === "suspension"
                   ? "Expires "

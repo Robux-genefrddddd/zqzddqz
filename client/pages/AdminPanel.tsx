@@ -28,7 +28,10 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { UserDetailModal } from "@/components/UserDetailModal";
 import { BroadcastMessageModal } from "@/components/BroadcastMessageModal";
-import { getAllBroadcastMessages, deleteBroadcastMessage } from "@/lib/broadcastService";
+import {
+  getAllBroadcastMessages,
+  deleteBroadcastMessage,
+} from "@/lib/broadcastService";
 
 interface User {
   uid: string;
@@ -55,7 +58,9 @@ interface AuditLog {
 export default function AdminPanel() {
   const navigate = useNavigate();
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<"users" | "logs" | "maintenance" | "messages">("users");
+  const [activeTab, setActiveTab] = useState<
+    "users" | "logs" | "maintenance" | "messages"
+  >("users");
   const [users, setUsers] = useState<User[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -159,9 +164,7 @@ export default function AdminPanel() {
         maintenanceMessage,
         userProfile.displayName,
       );
-      toast.success(
-        `Maintenance mode ${newStatus ? "enabled" : "disabled"}`,
-      );
+      toast.success(`Maintenance mode ${newStatus ? "enabled" : "disabled"}`);
       setShowMaintenanceModal(false);
     } catch (error) {
       console.error("Error updating maintenance mode:", error);
@@ -542,16 +545,16 @@ export default function AdminPanel() {
                   onClick={() => setShowMaintenanceModal(true)}
                   className="w-full"
                 >
-                  {maintenanceStatus?.enabled ? "Disable" : "Enable"} Maintenance
-                  Mode
+                  {maintenanceStatus?.enabled ? "Disable" : "Enable"}{" "}
+                  Maintenance Mode
                 </Button>
               </div>
             </div>
 
             <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
               <p className="text-sm text-blue-600/90">
-                When maintenance mode is enabled, visitors will see a maintenance
-                notice. Use this when performing critical updates or
+                When maintenance mode is enabled, visitors will see a
+                maintenance notice. Use this when performing critical updates or
                 maintenance.
               </p>
             </div>

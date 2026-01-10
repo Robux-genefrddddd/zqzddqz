@@ -50,7 +50,9 @@ const BanGuard = ({ children }: { children: ReactNode }) => {
     const checkBanStatus = async () => {
       if (!loading && user) {
         const warnings = await getUserActiveWarnings(user.uid);
-        const hasBan = warnings.some((w) => w.type === "ban" || w.type === "suspension");
+        const hasBan = warnings.some(
+          (w) => w.type === "ban" || w.type === "suspension",
+        );
         if (hasBan) {
           navigate("/banned");
         }
