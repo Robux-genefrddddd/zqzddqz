@@ -40,6 +40,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
+    let notificationsUnsub: (() => void) | null = null;
+    let unreadUnsub: (() => void) | null = null;
+
     const unsubscribe = onAuthChange(async (authUser) => {
       setUser(authUser);
       if (authUser) {
@@ -63,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
 
           // Subscribe to real-time notifications
-          const notificationsUnsub =
+          notificationsUnsub =
             notificationService.subscribeToUserNotifications(
               authUser.uid,
               (notifs) => {
@@ -71,17 +74,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               },
             );
 
-          const unreadUnsub = notificationService.subscribeToUnreadCount(
+          unreadUnsub = notificationService.subscribeToUnreadCount(
             authUser.uid,
             (count) => {
               setUnreadCount(count);
             },
           );
-
-          return () => {
-            notificationsUnsub();
-            unreadUnsub();
-          };
         } catch (error) {
           console.error("Error fetching user profile:", error);
         }
@@ -89,11 +87,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUserProfile(null);
         setNotifications([]);
         setUnreadCount(0);
+        // Unsubscribe from notifications when logged out
+        if (notificationsUnsub) notificationsUnsub();
+        if (unreadUnsub) unreadUnsub();
       }
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      if (notificationsUnsub) notificationsUnsub();
+      if (unreadUnsub) unreadUnsub();
+    };
   }, []);
 
   const value: AuthContextType = {
