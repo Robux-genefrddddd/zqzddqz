@@ -13,6 +13,13 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { getPublishedAssets, type Asset } from "@/lib/assetService";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CATEGORIES = [
   { name: "3D Models", icon: Box },
@@ -163,17 +170,18 @@ export default function Marketplace() {
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">
                   Sort By
                 </h3>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 py-2 bg-secondary/30 border border-border rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all text-sm text-foreground"
-                >
-                  <option value="newest">Newest</option>
-                  <option value="popular">Most Popular</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                </select>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="bg-[#1e1e1e] border-white/8 hover:border-white/15">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="popular">Most Popular</SelectItem>
+                    <SelectItem value="rating">Highest Rated</SelectItem>
+                    <SelectItem value="price-low">Price: Low to High</SelectItem>
+                    <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Close Mobile Filters */}
