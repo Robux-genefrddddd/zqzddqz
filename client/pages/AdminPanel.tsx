@@ -188,25 +188,75 @@ export default function AdminPanel() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold flex items-center gap-3">
-              <div className="p-2 bg-primary/20 rounded-lg">
-                <Shield size={32} className="text-primary" />
-              </div>
-              Admin Panel
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Manage users, issue warnings, and monitor activities
-            </p>
+        <div className="space-y-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold flex items-center gap-3">
+                <div className="p-2 bg-primary/20 rounded-lg">
+                  <Shield size={32} className="text-primary" />
+                </div>
+                Admin Panel
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Manage users, issue warnings, and monitor activities
+              </p>
+            </div>
+            <Button
+              onClick={handleLogout}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              <LogOut size={16} className="mr-2" />
+              Sign Out
+            </Button>
           </div>
-          <Button
-            onClick={handleLogout}
-            className="bg-destructive hover:bg-destructive/90"
-          >
-            <LogOut size={16} className="mr-2" />
-            Sign Out
-          </Button>
+
+          {/* Maintenance Mode Alert */}
+          {maintenanceStatus?.enabled && (
+            <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-start justify-between">
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={20} className="text-yellow-600 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-yellow-600">
+                    Maintenance Mode Active
+                  </h3>
+                  {maintenanceStatus.message && (
+                    <p className="text-sm text-yellow-600/80 mt-1">
+                      {maintenanceStatus.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {userProfile?.role === "founder" && (
+                <Button
+                  onClick={() => setShowMaintenanceModal(true)}
+                  variant="outline"
+                  size="sm"
+                  className="ml-4"
+                >
+                  Manage
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* Founder-Only Maintenance Button */}
+          {userProfile?.role === "founder" && !maintenanceStatus?.enabled && (
+            <div className="flex items-center justify-between p-4 bg-card border border-border/30 rounded-xl">
+              <div>
+                <h3 className="font-semibold">Maintenance Mode</h3>
+                <p className="text-sm text-muted-foreground">
+                  Put the site in maintenance mode
+                </p>
+              </div>
+              <Button
+                onClick={() => setShowMaintenanceModal(true)}
+                variant="outline"
+                size="sm"
+              >
+                Enable
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Stats */}
