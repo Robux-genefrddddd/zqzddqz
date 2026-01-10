@@ -101,17 +101,23 @@ export default function Index() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 pt-4">
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">10K+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatNumber(stats.totalAssets) + "+"}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Quality Assets
                 </p>
               </div>
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">50K+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatNumber(stats.totalCreators) + "+"}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">Creators</p>
               </div>
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">$2M+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatCurrency(stats.totalDistributed)}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Distributed
                 </p>
