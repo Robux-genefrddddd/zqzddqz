@@ -97,31 +97,29 @@ export async function createWarning(
   durationDays?: number,
 ): Promise<string> {
   try {
-    const warningData: Omit<Warning, "id"> = {
+    const docData: any = {
       userId,
       adminId,
       adminName,
       type,
       reason,
-      createdAt: new Date(),
+      createdAt: Timestamp.now(),
       isActive: true,
-      details,
     };
+
+    // Add optional fields only if they have values
+    if (details) {
+      docData.details = details;
+    }
 
     // Add expiration for temporary warnings/suspensions
     if (durationDays && type !== "ban") {
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + durationDays);
-      warningData.expiresAt = expiresAt;
+      docData.expiresAt = Timestamp.fromDate(expiresAt);
     }
 
-    const docRef = await addDoc(collection(db, WARNINGS_COLLECTION), {
-      ...warningData,
-      createdAt: Timestamp.now(),
-      expiresAt: warningData.expiresAt
-        ? Timestamp.fromDate(warningData.expiresAt)
-        : undefined,
-    });
+    const docRef = await addDoc(collection(db, WARNINGS_COLLECTION), docData);
 
     return docRef.id;
   } catch (error) {
