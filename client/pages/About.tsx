@@ -287,10 +287,9 @@ export default function About() {
 
 function TeamCard({ member }: { member: TeamMember }) {
   const roleInfo = getRoleInfo(member.role);
-  const RoleIcon = roleInfo.icon;
 
   return (
-    <div className="text-center space-y-3">
+    <div className="text-center space-y-2">
       <div className="w-full aspect-square mx-auto rounded-lg overflow-hidden border border-border/30">
         <img
           src={
@@ -302,15 +301,13 @@ function TeamCard({ member }: { member: TeamMember }) {
         />
       </div>
       <div>
-        <h3 className="font-semibold text-sm text-foreground">
+        <h3 className="font-semibold text-xs text-foreground">
           {member.displayName}
         </h3>
         <p className="text-xs text-muted-foreground">@{member.username}</p>
-        <div className="mt-2 flex justify-center">
-          <div
-            className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold ${roleInfo.color}`}
-          >
-            <RoleIcon size={12} />
+        <div className="mt-1 flex justify-center">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold text-foreground bg-secondary/30">
+            <img src={roleInfo.icon} alt={roleInfo.label} className="w-3 h-3" />
             {roleInfo.label}
           </div>
         </div>
