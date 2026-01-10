@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Ban, AlertCircle, Trash2, Clock } from "lucide-react";
+import { X, AlertCircle, Clock, Check, ChevronRight, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,13 @@ import {
 } from "@/lib/warningService";
 import { updateUserProfile } from "@/lib/auth";
 import { Warning } from "@/lib/warningService";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface User {
   uid: string;
@@ -31,22 +38,23 @@ interface UserDetailModalProps {
   currentUserRole?: string;
 }
 
+type ModerationStep = "select" | "warning" | "suspension" | "ban" | "history";
+type ConfirmDialogType = "warning" | "suspension" | "ban" | "deleteAccount" | null;
+
 export function UserDetailModal({
   user,
   onClose,
   onAction,
   currentUserRole = "member",
 }: UserDetailModalProps) {
-  const [activeTab, setActiveTab] = useState<"info" | "actions" | "history">(
-    "info",
-  );
+  const [activeTab, setActiveTab] = useState<"info" | "moderation">("info");
+  const [moderationStep, setModerationStep] = useState<ModerationStep>("select");
   const [warnings, setWarnings] = useState<Warning[]>([]);
   const [loading, setLoading] = useState(false);
-  const [actionType, setActionType] = useState<
-    "warning" | "ban" | "suspension"
-  >("warning");
   const [reason, setReason] = useState("");
   const [durationDays, setDurationDays] = useState("7");
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogType>(null);
+  const [warningsLoaded, setWarningsLoaded] = useState(false);
 
   if (!user) return null;
 
@@ -54,12 +62,14 @@ export function UserDetailModal({
     try {
       const userWarnings = await getUserWarnings(user.uid);
       setWarnings(userWarnings);
+      setWarningsLoaded(true);
     } catch (error) {
       console.error("Error loading warnings:", error);
+      toast.error("Failed to load warning history");
     }
   };
 
-  const handleCreateWarning = async () => {
+  const handleCreateWarning = async (type: "warning" | "suspension" | "ban") => {
     if (!reason.trim()) {
       toast.error("Please provide a reason");
       return;
@@ -67,22 +77,22 @@ export function UserDetailModal({
 
     setLoading(true);
     try {
-      const duration =
-        actionType === "ban" ? undefined : parseInt(durationDays);
+      const duration = type === "ban" ? undefined : parseInt(durationDays);
       await createWarning(
         user.uid,
-        "admin-id", // This should come from current user
-        "Admin", // This should come from current user
-        actionType,
+        "admin-id",
+        currentUserRole === "founder" ? "Founder" : "Admin",
+        type,
         reason,
         `Issued by ${currentUserRole}`,
         duration,
       );
 
-      toast.success(`${actionType} created successfully`);
+      toast.success(`${type} issued successfully`);
       setReason("");
       setDurationDays("7");
-      setActionType("warning");
+      setConfirmDialog(null);
+      setModerationStep("select");
 
       // Reload warnings
       const userWarnings = await getUserWarnings(user.uid);
@@ -91,7 +101,7 @@ export function UserDetailModal({
       if (onAction) onAction();
     } catch (error) {
       console.error("Error creating warning:", error);
-      toast.error("Failed to create warning");
+      toast.error("Failed to issue action");
     } finally {
       setLoading(false);
     }
@@ -120,7 +130,6 @@ export function UserDetailModal({
   };
 
   const handleBanUser = async () => {
-    // Prevent banning admins and founders (protects higher roles)
     if (
       (user.role === "founder" && currentUserRole !== "founder") ||
       (user.role === "admin" && currentUserRole === "member")
@@ -133,6 +142,7 @@ export function UserDetailModal({
     try {
       await updateUserProfile(user.uid, { isBanned: true });
       toast.success("User banned successfully");
+      setConfirmDialog(null);
       if (onAction) onAction();
       onClose();
     } catch (error) {
@@ -144,21 +154,15 @@ export function UserDetailModal({
   };
 
   const handleDeleteAccount = async () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete ${user.displayName}'s account? This action cannot be undone.`,
-    );
-
-    if (!confirmed) return;
-
     setLoading(true);
     try {
-      // Mark account as deleted (soft delete)
       await updateUserProfile(user.uid, {
         isBanned: true,
         banReason: "Account deleted by admin",
       });
 
       toast.success("Account deleted successfully");
+      setConfirmDialog(null);
       if (onAction) onAction();
       onClose();
     } catch (error) {
@@ -169,102 +173,98 @@ export function UserDetailModal({
     }
   };
 
+  const canModerateUser =
+    (user.role !== "founder" || currentUserRole === "founder") &&
+    (user.role !== "admin" ||
+      currentUserRole === "founder" ||
+      currentUserRole === "admin");
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-card border border-border/40 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border/20">
-          <h2 className="text-xl font-bold">User Details</h2>
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+      <div className="bg-card border border-border/40 rounded-xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+        {/* Header - Compact */}
+        <div className="flex items-start justify-between p-4 border-b border-border/20">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <img
+              src={
+                user.profileImage ||
+                `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
+              }
+              alt={user.displayName}
+              className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <h2 className="text-sm font-bold truncate">{user.displayName}</h2>
+              <p className="text-xs text-muted-foreground truncate">
+                @{user.username}
+              </p>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-secondary/50 rounded-lg transition-colors"
+            className="p-1 hover:bg-secondary/50 rounded-lg transition-colors flex-shrink-0"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
+        </div>
+
+        {/* Tabs - Compact */}
+        <div className="flex border-b border-border/20 px-4">
+          <button
+            onClick={() => {
+              setActiveTab("info");
+              setModerationStep("select");
+            }}
+            className={`py-2 text-xs font-medium border-b-2 transition-colors -mb-[1px] ${
+              activeTab === "info"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Info
+          </button>
+          {canModerateUser && (
+            <button
+              onClick={() => {
+                setActiveTab("moderation");
+                handleLoadWarnings();
+              }}
+              className={`py-2 text-xs font-medium border-b-2 transition-colors -mb-[1px] ml-4 ${
+                activeTab === "moderation"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Moderation
+            </button>
+          )}
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* User Profile Section */}
-          <div className="p-6 border-b border-border/20">
-            <div className="flex gap-6">
-              {/* Avatar */}
-              <img
-                src={
-                  user.profileImage ||
-                  `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
-                }
-                alt={user.displayName}
-                className="w-24 h-24 rounded-xl object-cover"
-              />
-
-              {/* Info */}
-              <div className="flex-1">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold">{user.displayName}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    @{user.username}
-                  </p>
-                </div>
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Email:</span>
-                    <span>{user.email}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Role:</span>
-                    <span className="capitalize font-medium">{user.role}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Rank:</span>
-                    <span className="capitalize">
-                      {user.memberRank || "N/A"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Status:</span>
-                    <span
-                      className={
-                        user.isBanned ? "text-red-400" : "text-green-400"
-                      }
-                    >
-                      {user.isBanned ? "Banned" : "Active"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex border-b border-border/20">
-            {["info", "actions", "history"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as typeof activeTab)}
-                className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === tab
-                    ? "border-accent text-accent"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab === "info" && "Information"}
-                {tab === "actions" && "Actions"}
-                {tab === "history" && "History"}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-6">
-            {activeTab === "info" && (
-              <div className="space-y-4">
+          {activeTab === "info" ? (
+            <div className="p-4 space-y-4">
+              {/* Quick Info */}
+              <div className="space-y-2">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Account Created
-                  </p>
-                  <p className="text-sm">
+                  <p className="text-xs text-muted-foreground font-medium">Email</p>
+                  <p className="text-sm text-foreground">{user.email}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Role</p>
+                  <p className="text-sm text-foreground capitalize">{user.role}</p>
+                </div>
+                {user.memberRank && (
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium">Rank</p>
+                    <p className="text-sm text-foreground capitalize">
+                      {user.memberRank}
+                    </p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Member Since</p>
+                  <p className="text-sm text-foreground">
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -272,35 +272,151 @@ export function UserDetailModal({
                     })}
                   </p>
                 </div>
-              </div>
-            )}
-
-            {activeTab === "actions" && (
-              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Action Type
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["warning", "ban", "suspension"] as const).map((type) => (
-                      <button
-                        key={type}
-                        onClick={() => setActionType(type)}
-                        className={`px-3 py-2 rounded-lg border transition-colors text-sm capitalize ${
-                          actionType === type
-                            ? "border-accent bg-accent/20 text-accent"
-                            : "border-border/30 text-muted-foreground hover:border-border/60"
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    ))}
+                  <p className="text-xs text-muted-foreground font-medium">Status</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        user.isBanned ? "bg-yellow-600" : "bg-green-600"
+                      }`}
+                    />
+                    <span className="text-sm font-medium">
+                      {user.isBanned ? "Banned" : "Active"}
+                    </span>
                   </div>
                 </div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 space-y-4">
+              {/* Moderation Flow */}
+              {moderationStep === "select" ? (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-muted-foreground mb-3">
+                    Choose moderation action
+                  </p>
 
-                {actionType !== "ban" && (
+                  {/* Warning Action */}
+                  <button
+                    onClick={() => setModerationStep("warning")}
+                    className="w-full p-3 bg-secondary/20 border border-border/30 rounded-lg hover:border-border/60 hover:bg-secondary/30 transition-all text-left group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">Issue Warning</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          First notice for minor infractions
+                        </p>
+                      </div>
+                      <ChevronRight size={16} className="text-muted-foreground group-hover:text-foreground" />
+                    </div>
+                  </button>
+
+                  {/* Suspension Action */}
+                  <button
+                    onClick={() => setModerationStep("suspension")}
+                    className="w-full p-3 bg-secondary/20 border border-border/30 rounded-lg hover:border-border/60 hover:bg-secondary/30 transition-all text-left group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">Temporary Suspension</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Block access for a limited period
+                        </p>
+                      </div>
+                      <ChevronRight size={16} className="text-muted-foreground group-hover:text-foreground" />
+                    </div>
+                  </button>
+
+                  {/* Permanent Ban Action */}
+                  <button
+                    onClick={() => setModerationStep("ban")}
+                    className="w-full p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg hover:border-yellow-500/60 hover:bg-yellow-500/15 transition-all text-left group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-yellow-700">Permanent Ban</p>
+                        <p className="text-xs text-yellow-600/70 mt-0.5">
+                          Irreversible action - requires confirmation
+                        </p>
+                      </div>
+                      <ChevronRight size={16} className="text-yellow-600 group-hover:text-yellow-700" />
+                    </div>
+                  </button>
+
+                  {/* History */}
+                  {!warningsLoaded && (
+                    <button
+                      onClick={() => handleLoadWarnings()}
+                      className="w-full p-3 bg-secondary/10 border border-border/30 rounded-lg hover:border-border/60 hover:bg-secondary/20 transition-all text-left group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium">View History</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            See past warnings and actions
+                          </p>
+                        </div>
+                        <ChevronRight size={16} className="text-muted-foreground group-hover:text-foreground" />
+                      </div>
+                    </button>
+                  )}
+
+                  {/* History Display */}
+                  {warningsLoaded && warnings.length > 0 && (
+                    <div className="pt-2 border-t border-border/20">
+                      <p className="text-xs font-medium text-muted-foreground mb-2">
+                        Moderation History
+                      </p>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {warnings.map((w) => (
+                          <div
+                            key={w.id}
+                            className="p-2 bg-secondary/10 border border-border/30 rounded text-xs"
+                          >
+                            <div className="flex items-center justify-between gap-1 mb-0.5">
+                              <span
+                                className={`px-1.5 py-0.5 rounded text-xs font-medium capitalize ${
+                                  w.type === "ban"
+                                    ? "bg-yellow-500/20 text-yellow-700"
+                                    : w.type === "suspension"
+                                      ? "bg-orange-500/20 text-orange-700"
+                                      : "bg-blue-500/20 text-blue-700"
+                                }`}
+                              >
+                                {w.type}
+                              </span>
+                              {currentUserRole === "founder" && (
+                                <button
+                                  onClick={() => handleDeleteWarning(w.id)}
+                                  disabled={loading}
+                                  className="text-muted-foreground hover:text-destructive transition-colors"
+                                >
+                                  <X size={12} />
+                                </button>
+                              )}
+                            </div>
+                            <p className="text-muted-foreground">{w.reason}</p>
+                            <p className="text-muted-foreground/70 mt-1">
+                              {new Date(w.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : moderationStep === "warning" ? (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setModerationStep("select")}
+                    className="text-xs text-muted-foreground hover:text-foreground mb-2"
+                  >
+                    ← Back to actions
+                  </button>
+
                   <div>
-                    <label className="block text-sm font-medium mb-2">
+                    <label className="block text-xs font-medium mb-2">
                       Duration (days)
                     </label>
                     <Input
@@ -309,143 +425,234 @@ export function UserDetailModal({
                       value={durationDays}
                       onChange={(e) => setDurationDays(e.target.value)}
                       placeholder="7"
+                      className="text-sm h-8"
                     />
                   </div>
-                )}
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Reason
-                  </label>
-                  <Textarea
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    placeholder="Explain the reason for this action..."
-                    rows={4}
-                  />
+                  <div>
+                    <label className="block text-xs font-medium mb-2">
+                      Reason
+                    </label>
+                    <Textarea
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      placeholder="Explain the reason for this warning..."
+                      rows={3}
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={() => setConfirmDialog("warning")}
+                    disabled={loading || !reason.trim()}
+                    className="w-full text-sm"
+                  >
+                    Continue to Confirmation
+                  </Button>
                 </div>
+              ) : moderationStep === "suspension" ? (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setModerationStep("select")}
+                    className="text-xs text-muted-foreground hover:text-foreground mb-2"
+                  >
+                    ← Back to actions
+                  </button>
 
-                <Button
-                  onClick={handleCreateWarning}
-                  disabled={loading}
-                  className="w-full"
-                >
-                  <AlertCircle size={16} className="mr-2" />
-                  Issue {actionType}
-                </Button>
+                  <div>
+                    <label className="block text-xs font-medium mb-2">
+                      Suspension Duration (days)
+                    </label>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={durationDays}
+                      onChange={(e) => setDurationDays(e.target.value)}
+                      placeholder="7"
+                      className="text-sm h-8"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium mb-2">
+                      Reason
+                    </label>
+                    <Textarea
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      placeholder="Explain the reason for this suspension..."
+                      rows={3}
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={() => setConfirmDialog("suspension")}
+                    disabled={loading || !reason.trim()}
+                    className="w-full text-sm"
+                  >
+                    Continue to Confirmation
+                  </Button>
+                </div>
+              ) : moderationStep === "ban" ? (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setModerationStep("select")}
+                    className="text-xs text-muted-foreground hover:text-foreground mb-2"
+                  >
+                    ← Back to actions
+                  </button>
+
+                  <div className="p-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                    <p className="text-xs text-yellow-700">
+                      <strong>Permanent ban</strong> is irreversible. Only founders can delete this action.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium mb-2">
+                      Reason (required)
+                    </label>
+                    <Textarea
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      placeholder="Explain the reason for this ban..."
+                      rows={3}
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={() => setConfirmDialog("ban")}
+                    disabled={loading || !reason.trim()}
+                    className="w-full text-sm bg-yellow-600 hover:bg-yellow-700"
+                  >
+                    Continue to Confirmation
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+
+        {/* Footer - Action Menu */}
+        {activeTab === "moderation" && canModerateUser && !user.isBanned && (
+          <div className="border-t border-border/20 p-3 bg-card">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground flex-1">
+                {moderationStep === "select"
+                  ? "Select an action above"
+                  : "Fill in the details and confirm"}
+              </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors">
+                    <MoreVertical size={16} className="text-muted-foreground" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onClick={() => setConfirmDialog("deleteAccount")}
+                    className="text-yellow-600"
+                  >
+                    Delete Account
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation Dialogs */}
+        {confirmDialog && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+            <div className="bg-card border border-border/40 rounded-xl w-full max-w-sm shadow-2xl">
+              <div className="p-4 border-b border-border/20">
+                <h3 className="font-semibold text-sm">
+                  Confirm {confirmDialog === "deleteAccount" ? "Account Deletion" : confirmDialog}
+                </h3>
               </div>
-            )}
 
-            {activeTab === "history" && (
-              <div className="space-y-4">
-                <Button
-                  onClick={handleLoadWarnings}
-                  variant="outline"
-                  className="w-full mb-4"
-                  disabled={loading}
-                >
-                  Reload Warnings
-                </Button>
-
-                {warnings.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">No warnings or bans</p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {warnings.map((warning) => (
-                      <div
-                        key={warning.id}
-                        className="p-4 bg-secondary/20 border border-border/30 rounded-xl"
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-medium capitalize ${
-                                warning.type === "ban"
-                                  ? "bg-red-500/20 text-red-400"
-                                  : warning.type === "suspension"
-                                    ? "bg-yellow-500/20 text-yellow-400"
-                                    : "bg-blue-500/20 text-blue-400"
-                              }`}
-                            >
-                              {warning.type}
-                            </span>
-                            {warning.expiresAt && (
-                              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                <Clock size={12} />
-                                Expires{" "}
-                                {new Date(
-                                  warning.expiresAt,
-                                ).toLocaleDateString()}
-                              </span>
-                            )}
-                          </div>
-
-                          {currentUserRole === "founder" && (
-                            <button
-                              onClick={() => handleDeleteWarning(warning.id)}
-                              disabled={loading}
-                              className="p-1 hover:bg-red-500/20 rounded transition-colors"
-                            >
-                              <Trash2 size={16} className="text-red-400" />
-                            </button>
-                          )}
-                        </div>
-
-                        <p className="text-sm text-muted-foreground mb-1">
-                          {warning.reason}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          By {warning.adminName} •{" "}
-                          {new Date(warning.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+              <div className="p-4 space-y-3">
+                {confirmDialog === "warning" && (
+                  <>
+                    <p className="text-sm text-foreground">
+                      Issue a <strong>warning</strong> to {user.displayName} for {durationDays} days?
+                    </p>
+                    <p className="text-xs text-muted-foreground bg-secondary/20 p-2 rounded border border-border/30">
+                      Reason: {reason}
+                    </p>
+                  </>
+                )}
+                {confirmDialog === "suspension" && (
+                  <>
+                    <p className="text-sm text-foreground">
+                      <strong>Suspend</strong> {user.displayName} for {durationDays} days?
+                    </p>
+                    <p className="text-xs text-muted-foreground bg-secondary/20 p-2 rounded border border-border/30">
+                      Reason: {reason}
+                    </p>
+                  </>
+                )}
+                {confirmDialog === "ban" && (
+                  <>
+                    <p className="text-sm text-yellow-700 font-medium">
+                      Permanently ban {user.displayName}?
+                    </p>
+                    <p className="text-xs text-muted-foreground bg-yellow-500/10 p-2 rounded border border-yellow-500/20">
+                      This action is irreversible. Only founders can delete this ban.
+                    </p>
+                    <p className="text-xs text-muted-foreground bg-secondary/20 p-2 rounded border border-border/30">
+                      Reason: {reason}
+                    </p>
+                  </>
+                )}
+                {confirmDialog === "deleteAccount" && (
+                  <>
+                    <p className="text-sm text-foreground">
+                      Delete {user.displayName}'s account?
+                    </p>
+                    <p className="text-xs text-muted-foreground bg-yellow-500/10 p-2 rounded border border-yellow-500/20">
+                      This action cannot be undone.
+                    </p>
+                  </>
                 )}
               </div>
-            )}
+
+              <div className="border-t border-border/20 p-4 bg-card space-y-2">
+                <Button
+                  onClick={() => {
+                    if (confirmDialog === "warning") {
+                      handleCreateWarning("warning");
+                    } else if (confirmDialog === "suspension") {
+                      handleCreateWarning("suspension");
+                    } else if (confirmDialog === "ban") {
+                      handleBanUser();
+                    } else if (confirmDialog === "deleteAccount") {
+                      handleDeleteAccount();
+                    }
+                  }}
+                  disabled={loading}
+                  className="w-full text-sm"
+                  variant={
+                    confirmDialog === "ban" || confirmDialog === "deleteAccount"
+                      ? "destructive"
+                      : "default"
+                  }
+                >
+                  {confirmDialog === "deleteAccount" ? "Delete Account" : "Confirm"}
+                </Button>
+                <Button
+                  onClick={() => setConfirmDialog(null)}
+                  variant="outline"
+                  className="w-full text-sm"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Footer Actions */}
-        <div className="border-t border-border/20 p-6 bg-card space-y-3">
-          {!user.isBanned &&
-            (user.role !== "founder" || currentUserRole === "founder") &&
-            (user.role !== "admin" ||
-              currentUserRole === "founder" ||
-              currentUserRole === "admin") && (
-              <Button
-                onClick={handleBanUser}
-                disabled={loading}
-                variant="destructive"
-                className="w-full"
-              >
-                <Ban size={16} className="mr-2" />
-                Ban User
-              </Button>
-            )}
-
-          {(user.role !== "founder" || currentUserRole === "founder") &&
-            (user.role !== "admin" ||
-              currentUserRole === "founder" ||
-              currentUserRole === "admin") && (
-              <Button
-                onClick={handleDeleteAccount}
-                disabled={loading}
-                variant="destructive"
-                className="w-full"
-              >
-                <Trash2 size={16} className="mr-2" />
-                Delete Account
-              </Button>
-            )}
-
-          <Button onClick={onClose} variant="outline" className="w-full">
-            Close
-          </Button>
-        </div>
+        )}
       </div>
     </div>
   );
