@@ -103,13 +103,12 @@ export async function markAllNotificationsAsRead(
     const q = query(
       collection(db, NOTIFICATIONS_COLLECTION),
       where("userId", "==", userId),
-      where("read", "==", false),
     );
     const querySnapshot = await getDocs(q);
 
-    const batch = querySnapshot.docs.map((doc) =>
-      updateDoc(doc.ref, { read: true }),
-    );
+    const batch = querySnapshot.docs
+      .filter((doc) => !doc.data().read) // Only update unread notifications
+      .map((doc) => updateDoc(doc.ref, { read: true }));
 
     await Promise.all(batch);
   } catch (error) {
