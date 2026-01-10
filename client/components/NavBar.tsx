@@ -162,9 +162,16 @@ export function NavBar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/messages" className="cursor-pointer">
-                        <Mail size={16} className="mr-2" />
-                        Messages
+                      <Link to="/messages" className="cursor-pointer flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Mail size={16} className="mr-2" />
+                          Messages
+                        </div>
+                        {unreadCount > 0 && (
+                          <span className="ml-auto bg-destructive text-destructive-foreground text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                            {unreadCount > 9 ? "9+" : unreadCount}
+                          </span>
+                        )}
                       </Link>
                     </DropdownMenuItem>
                     {(userProfile.role === "founder" ||
