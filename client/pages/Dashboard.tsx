@@ -77,6 +77,8 @@ export default function Dashboard() {
       if (user?.uid) {
         const userAssets = await getUserAssets(user.uid);
         setAssets(userAssets);
+        const scheduled = await getUserScheduledUploads(user.uid);
+        setScheduledUploads(scheduled);
       }
       setLoading(false);
     };
