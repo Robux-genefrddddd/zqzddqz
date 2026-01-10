@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { Menu, X, LogOut, Users, Mail, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
