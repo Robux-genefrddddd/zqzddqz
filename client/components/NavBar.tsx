@@ -231,53 +231,53 @@ export function NavBar() {
             onClick={() => setMenuOpen(false)}
           />
           {/* Menu Panel */}
-          <div className="fixed left-0 top-14 bottom-0 w-72 bg-gradient-to-b from-sidebar to-sidebar/95 border-r border-sidebar-border overflow-y-auto z-50 shadow-2xl">
+          <div className="fixed left-0 top-14 bottom-0 w-72 bg-secondary border-r border-border overflow-y-auto z-50 shadow-2xl">
             <div className="flex flex-col h-full">
               {/* Menu Header */}
-              <div className="px-6 py-6 border-b border-sidebar-border/50">
-                <h2 className="text-xl font-bold text-sidebar-foreground mb-1">Navigation</h2>
-                <p className="text-xs text-sidebar-foreground/60">Access all features</p>
+              <div className="px-6 py-6 border-b border-border/50">
+                <h2 className="text-xl font-bold text-foreground mb-1">Navigation</h2>
+                <p className="text-xs text-muted-foreground">Access all features</p>
               </div>
 
               {/* Menu Content */}
               <div className="flex-1 overflow-y-auto">
                 {/* Main Navigation */}
                 <div className="px-4 py-6">
-                  <p className="text-xs font-semibold text-sidebar-primary/70 uppercase tracking-wider mb-3 px-2">
+                  <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
                     Explore
                   </p>
                   <div className="space-y-2">
                     <Link
                       to="/marketplace"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground group"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground group"
                       onClick={() => setMenuOpen(false)}
                     >
                       <span className="text-xl">📦</span>
                       <div>
                         <div className="text-sm font-semibold">Marketplace</div>
-                        <div className="text-xs text-sidebar-foreground/50">Browse all assets</div>
+                        <div className="text-xs text-muted-foreground">Browse all assets</div>
                       </div>
                     </Link>
                     <Link
                       to="/support"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                       onClick={() => setMenuOpen(false)}
                     >
                       <span className="text-xl">🆘</span>
                       <div>
                         <div className="text-sm font-semibold">Support</div>
-                        <div className="text-xs text-sidebar-foreground/50">Get help & resources</div>
+                        <div className="text-xs text-muted-foreground">Get help & resources</div>
                       </div>
                     </Link>
                     <Link
                       to="/about"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                       onClick={() => setMenuOpen(false)}
                     >
                       <span className="text-xl">ℹ️</span>
                       <div>
                         <div className="text-sm font-semibold">About Us</div>
-                        <div className="text-xs text-sidebar-foreground/50">Learn more</div>
+                        <div className="text-xs text-muted-foreground">Learn more</div>
                       </div>
                     </Link>
                   </div>
@@ -286,11 +286,11 @@ export function NavBar() {
                 {isAuthenticated && userProfile ? (
                   <>
                     {/* User Profile Section */}
-                    <div className="px-4 py-6 border-t border-sidebar-border/30">
-                      <p className="text-xs font-semibold text-sidebar-primary/70 uppercase tracking-wider mb-3 px-2">
+                    <div className="px-4 py-6 border-t border-border/30">
+                      <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
                         Your Account
                       </p>
-                      <div className="bg-sidebar-primary/10 rounded-xl p-4 mb-4">
+                      <div className="bg-primary/10 rounded-xl p-4 mb-4">
                         <div className="flex items-center gap-3">
                           <img
                             src={
@@ -302,10 +302,10 @@ export function NavBar() {
                             className="w-12 h-12 rounded-lg object-cover"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-sidebar-foreground truncate">
+                            <p className="text-sm font-bold text-foreground truncate">
                               {userProfile.username}
                             </p>
-                            <p className="text-xs text-sidebar-foreground/60 truncate">
+                            <p className="text-xs text-muted-foreground truncate">
                               {userProfile.email}
                             </p>
                           </div>
@@ -314,55 +314,55 @@ export function NavBar() {
                       <div className="space-y-2">
                         <Link
                           to="/dashboard"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">📊</span>
                           <div>
                             <div className="text-sm font-semibold">Dashboard</div>
-                            <div className="text-xs text-sidebar-foreground/50">View your stats</div>
+                            <div className="text-xs text-muted-foreground">View your stats</div>
                           </div>
                         </Link>
                         <Link
                           to="/upload"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-sidebar-primary/30 hover:bg-sidebar-primary/40 transition-all duration-200 font-semibold text-sidebar-primary"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/30 hover:bg-primary/40 transition-all duration-200 font-semibold text-primary"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">⬆️</span>
                           <div>
                             <div className="text-sm font-bold">Upload Asset</div>
-                            <div className="text-xs text-sidebar-primary/70">Create new</div>
+                            <div className="text-xs text-primary/70">Create new</div>
                           </div>
                         </Link>
                       </div>
                     </div>
 
                     {/* Tools Section */}
-                    <div className="px-4 py-6 border-t border-sidebar-border/30">
-                      <p className="text-xs font-semibold text-sidebar-primary/70 uppercase tracking-wider mb-3 px-2">
+                    <div className="px-4 py-6 border-t border-border/30">
+                      <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
                         Tools
                       </p>
                       <div className="space-y-2">
                         <Link
                           to="/groups"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">👥</span>
                           <div>
                             <div className="text-sm font-semibold">Groups</div>
-                            <div className="text-xs text-sidebar-foreground/50">Manage groups</div>
+                            <div className="text-xs text-muted-foreground">Manage groups</div>
                           </div>
                         </Link>
                         <Link
                           to="/messages"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">💬</span>
                           <div className="flex-1">
                             <div className="text-sm font-semibold">Messages</div>
-                            <div className="text-xs text-sidebar-foreground/50">Your conversations</div>
+                            <div className="text-xs text-muted-foreground">Your conversations</div>
                           </div>
                           {unreadCount > 0 && (
                             <span className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
@@ -376,7 +376,7 @@ export function NavBar() {
                     {/* Admin Section */}
                     {(userProfile.role === "founder" ||
                       userProfile.role === "admin") && (
-                      <div className="px-4 py-6 border-t border-sidebar-border/30">
+                      <div className="px-4 py-6 border-t border-border/30">
                         <p className="text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-3 px-2">
                           Administration
                         </p>
@@ -397,31 +397,31 @@ export function NavBar() {
                 ) : (
                   <>
                     {/* Auth Section */}
-                    <div className="px-4 py-6 border-t border-sidebar-border/30">
-                      <p className="text-xs font-semibold text-sidebar-primary/70 uppercase tracking-wider mb-3 px-2">
+                    <div className="px-4 py-6 border-t border-border/30">
+                      <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
                         Account
                       </p>
                       <div className="space-y-2">
                         <Link
                           to="/login"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sidebar-primary/20 transition-all duration-200 font-medium text-sidebar-foreground"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">🔑</span>
                           <div>
                             <div className="text-sm font-semibold">Sign In</div>
-                            <div className="text-xs text-sidebar-foreground/50">Login to account</div>
+                            <div className="text-xs text-muted-foreground">Login to account</div>
                           </div>
                         </Link>
                         <Link
                           to="/register"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-sidebar-primary/30 hover:bg-sidebar-primary/40 transition-all duration-200 font-semibold text-sidebar-primary"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/30 hover:bg-primary/40 transition-all duration-200 font-semibold text-primary"
                           onClick={() => setMenuOpen(false)}
                         >
                           <span className="text-xl">✨</span>
                           <div>
                             <div className="text-sm font-bold">Create Account</div>
-                            <div className="text-xs text-sidebar-primary/70">Join now</div>
+                            <div className="text-xs text-primary/70">Join now</div>
                           </div>
                         </Link>
                       </div>
@@ -432,7 +432,7 @@ export function NavBar() {
 
               {/* Footer Section */}
               {isAuthenticated && userProfile && (
-                <div className="border-t border-sidebar-border/30 px-4 py-4">
+                <div className="border-t border-border/30 px-4 py-4">
                   <button
                     onClick={() => {
                       handleLogout();
@@ -450,7 +450,7 @@ export function NavBar() {
               )}
 
               {/* Branding */}
-              <div className="border-t border-sidebar-border/30 px-4 py-4 flex justify-center">
+              <div className="border-t border-border/30 px-4 py-4 flex justify-center">
                 <a
                   href="https://roblox.com"
                   target="_blank"
