@@ -37,7 +37,7 @@ function RoleBadge({ role }: { role?: string }) {
     return (
       <div className="flex items-center gap-1 px-2 py-1 bg-blue-500/20 rounded-lg">
         <img
-          src="https://i.ibb.co/n8cZTc4P/G50-Qy3-Ga-MAAih-Up-removebg-preview.png"
+          src="https://cdn3.emoji.gg/emojis/42747-roblox-verified.png"
           alt="Partner"
           className="w-4 h-4"
         />
