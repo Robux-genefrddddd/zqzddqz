@@ -25,12 +25,13 @@ import {
   deleteReview,
   type Review,
 } from "@/lib/reviewService";
-import { downloadAssetFile, forceDownloadFile } from "@/lib/fileService";
+import { downloadAssetFile, forceDownloadFile, type AssetFile } from "@/lib/fileService";
 import {
   isFavorited,
   addFavorite,
   removeFavorite,
 } from "@/lib/favoritesService";
+import { FilePreviewModal } from "@/components/FilePreviewModal";
 import { toast } from "sonner";
 import type { Asset } from "@/lib/assetService";
 
