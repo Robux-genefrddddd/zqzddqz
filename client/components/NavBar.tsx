@@ -145,6 +145,17 @@ export function NavBar() {
                         Upload Asset
                       </Link>
                     </DropdownMenuItem>
+                    {(userProfile.role === "founder" || userProfile.role === "admin") && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin" className="cursor-pointer text-amber-400">
+                            <Shield size={16} className="mr-2" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleLogout}
