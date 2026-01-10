@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { createAsset } from "@/lib/assetService";
+import { uploadAssetFile } from "@/lib/fileService";
 import { toast } from "sonner";
 import { UploadStep1 } from "@/components/upload/UploadStep1";
 import { UploadStep2 } from "@/components/upload/UploadStep2";
@@ -13,6 +14,7 @@ interface FilePreview {
   name: string;
   size: number;
   type: string;
+  file?: File; // Store actual file for upload
 }
 
 const STEPS = [
