@@ -539,12 +539,12 @@ export function NavBar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.25 }}
-                        className="px-4 py-6 border-t border-border/20"
+                        className="px-3 py-3 border-t border-border/10"
                       >
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                           Account
                         </p>
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           <motion.div
                             custom={3}
                             initial="hidden"
@@ -553,16 +553,14 @@ export function NavBar() {
                           >
                             <Link
                               to="/login"
-                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                               onClick={closeMenu}
                             >
                               <Lock
-                                size={18}
-                                className="text-muted-foreground group-hover:text-primary"
+                                size={16}
+                                className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                               />
-                              <span className="text-sm font-medium">
-                                Sign In
-                              </span>
+                              <span className="font-medium">Sign In</span>
                             </Link>
                           </motion.div>
                           <motion.div
@@ -573,13 +571,11 @@ export function NavBar() {
                           >
                             <Link
                               to="/register"
-                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
+                              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                               onClick={closeMenu}
                             >
-                              <Plus size={18} className="text-primary" />
-                              <span className="text-sm font-semibold">
-                                Create Account
-                              </span>
+                              <Plus size={16} className="text-muted-foreground group-hover:text-primary flex-shrink-0" />
+                              <span className="font-medium">Sign Up</span>
                             </Link>
                           </motion.div>
                         </div>
