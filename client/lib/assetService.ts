@@ -18,7 +18,15 @@ export interface Asset {
   id: string;
   name: string;
   description: string;
-  category: "3D Models" | "UI Design" | "Scripts" | "Animations" | "Plugins" | "Sounds" | "Images" | "Other";
+  category:
+    | "3D Models"
+    | "UI Design"
+    | "Scripts"
+    | "Animations"
+    | "Plugins"
+    | "Sounds"
+    | "Images"
+    | "Other";
   price: number;
   imageUrl: string;
   authorId: string;
@@ -39,7 +47,7 @@ const ASSETS_COLLECTION = "assets";
 // Get all published assets (for marketplace)
 export async function getPublishedAssets(
   categoryFilter?: string,
-  limitCount: number = 50
+  limitCount: number = 50,
 ) {
   try {
     const constraints = [
@@ -73,7 +81,7 @@ export async function getUserAssets(userId: string) {
     const q = query(
       collection(db, ASSETS_COLLECTION),
       where("authorId", "==", userId),
-      orderBy("updatedAt", "desc")
+      orderBy("updatedAt", "desc"),
     );
     const querySnapshot = await getDocs(q);
 
@@ -114,7 +122,10 @@ export async function getAsset(assetId: string) {
 export async function createAsset(
   authorId: string,
   authorName: string,
-  assetData: Omit<Asset, "id" | "createdAt" | "updatedAt" | "downloads" | "reviews">
+  assetData: Omit<
+    Asset,
+    "id" | "createdAt" | "updatedAt" | "downloads" | "reviews"
+  >,
 ) {
   try {
     const docRef = await addDoc(collection(db, ASSETS_COLLECTION), {
@@ -137,7 +148,7 @@ export async function createAsset(
 // Update asset
 export async function updateAsset(
   assetId: string,
-  updates: Partial<Omit<Asset, "id" | "createdAt">>
+  updates: Partial<Omit<Asset, "id" | "createdAt">>,
 ) {
   try {
     const docRef = doc(db, ASSETS_COLLECTION, assetId);
@@ -185,7 +196,7 @@ export async function getFeaturedAssets(limitCount: number = 6) {
       where("status", "==", "published"),
       where("featured", "==", true),
       orderBy("downloads", "desc"),
-      limit(limitCount)
+      limit(limitCount),
     );
     const querySnapshot = await getDocs(q);
 

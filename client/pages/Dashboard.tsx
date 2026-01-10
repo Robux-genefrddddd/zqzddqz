@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload as UploadIcon, TrendingUp, Download, DollarSign, Star, MoreVertical, LogOut } from "lucide-react";
+import {
+  Upload as UploadIcon,
+  TrendingUp,
+  Download,
+  DollarSign,
+  Star,
+  MoreVertical,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -48,12 +56,18 @@ export default function Dashboard() {
 
   // Calculate stats from real assets
   const stats = {
-    totalEarnings: assets.reduce((sum, asset) => sum + (asset.price || 0) * asset.downloads, 0),
+    totalEarnings: assets.reduce(
+      (sum, asset) => sum + (asset.price || 0) * asset.downloads,
+      0,
+    ),
     totalDownloads: assets.reduce((sum, asset) => sum + asset.downloads, 0),
     totalAssets: assets.length,
-    avgRating: assets.length > 0
-      ? (assets.reduce((sum, asset) => sum + asset.rating, 0) / assets.length).toFixed(2)
-      : 0,
+    avgRating:
+      assets.length > 0
+        ? (
+            assets.reduce((sum, asset) => sum + asset.rating, 0) / assets.length
+          ).toFixed(2)
+        : 0,
   };
 
   if (!isAuthenticated) {
@@ -79,7 +93,8 @@ export default function Dashboard() {
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-2">Dashboard</h1>
             <p className="text-muted-foreground">
-              Welcome back, {userProfile?.displayName || "Creator"}! Manage your assets and track your success.
+              Welcome back, {userProfile?.displayName || "Creator"}! Manage your
+              assets and track your success.
             </p>
           </div>
           <Link to="/upload">
@@ -272,7 +287,8 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <p className="text-muted-foreground">
-                You have {assets.length} published {assets.length === 1 ? "asset" : "assets"}
+                You have {assets.length} published{" "}
+                {assets.length === 1 ? "asset" : "assets"}
               </p>
               <Link to="/upload">
                 <Button size="sm">
@@ -358,7 +374,9 @@ export default function Dashboard() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
                             <DropdownMenuItem asChild>
-                              <Link to={`/asset/${asset.id}`}>View Details</Link>
+                              <Link to={`/asset/${asset.id}`}>
+                                View Details
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem disabled>
                               Edit (Coming Soon)

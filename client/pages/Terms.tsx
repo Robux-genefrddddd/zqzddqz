@@ -32,8 +32,8 @@ export default function Terms() {
                 Permission is granted to temporarily download one copy of the
                 materials (information or software) on RbxAssets for personal,
                 non-commercial transitory viewing only. This is the grant of a
-                license, not a transfer of title, and under this license you
-                may not:
+                license, not a transfer of title, and under this license you may
+                not:
               </p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>Modifying or copying the materials</li>
@@ -73,9 +73,9 @@ export default function Terms() {
               </h2>
               <p>
                 In no event shall RbxAssets or its suppliers be liable for any
-                damages (including, without limitation, damages for loss of
-                data or profit, or due to business interruption) arising out of
-                the use or inability to use the materials on RbxAssets, even if
+                damages (including, without limitation, damages for loss of data
+                or profit, or due to business interruption) arising out of the
+                use or inability to use the materials on RbxAssets, even if
                 RbxAssets or an authorized representative has been notified
                 orally or in writing of the possibility of such damage.
               </p>
@@ -112,10 +112,9 @@ export default function Terms() {
                 7. Modifications
               </h2>
               <p>
-                RbxAssets may revise the terms of service for the website at
-                any time without notice. By using this website, you are
-                agreeing to be bound by the then current version of the terms
-                of service.
+                RbxAssets may revise the terms of service for the website at any
+                time without notice. By using this website, you are agreeing to
+                be bound by the then current version of the terms of service.
               </p>
             </section>
 
@@ -156,7 +155,10 @@ export default function Terms() {
                     conduct:
                   </p>
                   <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-                    <li>Uploading content that infringes intellectual property rights</li>
+                    <li>
+                      Uploading content that infringes intellectual property
+                      rights
+                    </li>
                     <li>Harassment or abusive behavior toward other users</li>
                     <li>Spam or fraudulent activities</li>
                     <li>Circumventing security measures</li>
@@ -185,9 +187,9 @@ export default function Terms() {
               </h2>
               <p>
                 All content included on the website, such as text, graphics,
-                logos, images, and software, is the property of RbxAssets or
-                its content suppliers and is protected by international
-                copyright laws.
+                logos, images, and software, is the property of RbxAssets or its
+                content suppliers and is protected by international copyright
+                laws.
               </p>
             </section>
 
@@ -210,7 +212,9 @@ export default function Terms() {
                 contact us at:
               </p>
               <div className="bg-secondary/30 border border-border rounded-lg p-4 mt-4">
-                <p className="font-semibold text-foreground">RbxAssets Legal Team</p>
+                <p className="font-semibold text-foreground">
+                  RbxAssets Legal Team
+                </p>
                 <p>Email: legal@rbxassets.com</p>
                 <p>Address: 123 Creator Street, San Francisco, CA 94102</p>
               </div>
@@ -221,9 +225,9 @@ export default function Terms() {
                 Agreement Acknowledgment
               </h2>
               <p>
-                By using RbxAssets, you acknowledge that you have read, understood,
-                and agree to be bound by all of the terms and conditions of this
-                agreement.
+                By using RbxAssets, you acknowledge that you have read,
+                understood, and agree to be bound by all of the terms and
+                conditions of this agreement.
               </p>
             </section>
           </div>

@@ -91,7 +91,7 @@ export default function Upload() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -113,7 +113,9 @@ export default function Upload() {
         !formData.category ||
         files.length === 0
       ) {
-        alert("Please fill in all required fields and upload at least one file");
+        alert(
+          "Please fill in all required fields and upload at least one file",
+        );
         setIsSubmitting(false);
         return;
       }
@@ -128,7 +130,13 @@ export default function Upload() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       alert("Asset uploaded successfully!");
-      setFormData({ name: "", description: "", category: "", price: "", tags: "" });
+      setFormData({
+        name: "",
+        description: "",
+        category: "",
+        price: "",
+        tags: "",
+      });
       setFiles([]);
     } catch (error) {
       console.error("Upload error:", error);
@@ -154,9 +162,7 @@ export default function Upload() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* File Upload Section */}
             <div className="space-y-4">
-              <Label className="text-base font-semibold">
-                Upload Files *
-              </Label>
+              <Label className="text-base font-semibold">Upload Files *</Label>
               <div
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -258,7 +264,10 @@ export default function Upload() {
               {/* Category */}
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
-                <Select value={formData.category} onValueChange={handleSelectChange}>
+                <Select
+                  value={formData.category}
+                  onValueChange={handleSelectChange}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
@@ -306,13 +315,11 @@ export default function Upload() {
             {/* Terms Agreement */}
             <div className="p-4 bg-secondary/50 border border-border rounded-lg space-y-3">
               <div className="flex gap-3">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  required
-                  className="mt-0.5"
-                />
-                <label htmlFor="terms" className="text-sm text-muted-foreground">
+                <input type="checkbox" id="terms" required className="mt-0.5" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm text-muted-foreground"
+                >
                   I agree to the{" "}
                   <Link to="/terms" className="text-primary hover:underline">
                     Terms of Service
@@ -330,7 +337,10 @@ export default function Upload() {
                   required
                   className="mt-0.5"
                 />
-                <label htmlFor="original" className="text-sm text-muted-foreground">
+                <label
+                  htmlFor="original"
+                  className="text-sm text-muted-foreground"
+                >
                   I confirm this is original content or I have the rights to
                   distribute it
                 </label>
@@ -339,11 +349,7 @@ export default function Upload() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1"
-              >
+              <Button type="submit" disabled={isSubmitting} className="flex-1">
                 {isSubmitting ? "Uploading..." : "Upload Asset"}
               </Button>
               <Link

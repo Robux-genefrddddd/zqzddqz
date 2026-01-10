@@ -14,8 +14,7 @@ export default function Legal() {
     {
       icon: Eye,
       title: "Privacy Policy",
-      description:
-        "How we collect, use, and protect your personal information",
+      description: "How we collect, use, and protect your personal information",
       link: "/privacy",
       color: "bg-purple-500/10 text-purple-400",
     },
@@ -43,7 +42,9 @@ export default function Legal() {
       <section className="border-b border-border/50 py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold">Legal Information</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Legal Information
+            </h1>
             <p className="text-base text-muted-foreground max-w-2xl">
               Review our legal documents, terms of service, privacy policy, and
               other important legal information regarding RbxAssets.
@@ -93,14 +94,18 @@ export default function Legal() {
           <h2 className="text-2xl font-bold mb-8">Key Policies at a Glance</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="space-y-3 p-6 bg-secondary/30 border border-border/30 rounded-lg">
-              <h3 className="font-semibold text-foreground">User Responsibilities</h3>
+              <h3 className="font-semibold text-foreground">
+                User Responsibilities
+              </h3>
               <p className="text-sm text-muted-foreground">
                 You are responsible for maintaining account confidentiality, not
                 sharing your password, and ensuring accurate information.
               </p>
             </div>
             <div className="space-y-3 p-6 bg-secondary/30 border border-border/30 rounded-lg">
-              <h3 className="font-semibold text-foreground">Content Ownership</h3>
+              <h3 className="font-semibold text-foreground">
+                Content Ownership
+              </h3>
               <p className="text-sm text-muted-foreground">
                 You retain ownership of content you upload. We have the right to
                 use it for platform operations.
@@ -176,8 +181,8 @@ export default function Legal() {
                   Secure Data Handling
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  We use encryption, secure authentication, and industry-standard
-                  security practices.
+                  We use encryption, secure authentication, and
+                  industry-standard security practices.
                 </p>
               </div>
             </div>
@@ -228,7 +233,9 @@ export default function Legal() {
       {/* Support Section */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold mb-4">Questions About Our Policies?</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Questions About Our Policies?
+          </h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             If you have any questions or concerns about our legal documents or
             policies, please don't hesitate to contact us.

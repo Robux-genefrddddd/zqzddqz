@@ -29,9 +29,7 @@ export default function Cookies() {
               <h2 className="text-2xl font-semibold text-foreground">
                 2. Why We Use Cookies
               </h2>
-              <p>
-                We use cookies for several important reasons:
-              </p>
+              <p>We use cookies for several important reasons:</p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
                   <strong>Essential Cookies:</strong> To keep your session
@@ -159,8 +157,8 @@ export default function Cookies() {
               </p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <strong>Browser Settings:</strong> Adjust your browser settings
-                  to accept or reject cookies
+                  <strong>Browser Settings:</strong> Adjust your browser
+                  settings to accept or reject cookies
                 </li>
                 <li>
                   <strong>Selective Blocking:</strong> Block specific types of
@@ -201,7 +199,8 @@ export default function Cookies() {
                   and analytics
                 </li>
                 <li>
-                  <strong>Advertising Partners:</strong> For targeted advertising
+                  <strong>Advertising Partners:</strong> For targeted
+                  advertising
                 </li>
               </ul>
             </section>
@@ -222,9 +221,9 @@ export default function Cookies() {
                 8. International Users
               </h2>
               <p>
-                If you are located in the EU or UK, we comply with GDPR and
-                PECR regulations. We obtain your consent before setting
-                non-essential cookies and provide you with clear opt-out options.
+                If you are located in the EU or UK, we comply with GDPR and PECR
+                regulations. We obtain your consent before setting non-essential
+                cookies and provide you with clear opt-out options.
               </p>
             </section>
 
@@ -245,10 +244,13 @@ export default function Cookies() {
                 10. Contact Us
               </h2>
               <p>
-                If you have questions about our use of cookies, please contact us:
+                If you have questions about our use of cookies, please contact
+                us:
               </p>
               <div className="bg-secondary/30 border border-border rounded-lg p-4 mt-4">
-                <p className="font-semibold text-foreground">RbxAssets Privacy Team</p>
+                <p className="font-semibold text-foreground">
+                  RbxAssets Privacy Team
+                </p>
                 <p>Email: cookies@rbxassets.com</p>
                 <p>Address: 123 Creator Street, San Francisco, CA 94102</p>
               </div>
@@ -259,9 +261,9 @@ export default function Cookies() {
                 Cookie Consent
               </h2>
               <p>
-                By using RbxAssets, you consent to our use of cookies as described
-                in this policy. You can withdraw your consent at any time by
-                adjusting your browser settings.
+                By using RbxAssets, you consent to our use of cookies as
+                described in this policy. You can withdraw your consent at any
+                time by adjusting your browser settings.
               </p>
             </section>
           </div>

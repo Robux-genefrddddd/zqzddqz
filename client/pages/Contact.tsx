@@ -22,7 +22,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -83,7 +83,9 @@ export default function Contact() {
             {/* Contact Information */}
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
+                <h2 className="text-2xl font-semibold mb-6">
+                  Contact Information
+                </h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <Mail className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
@@ -176,7 +178,9 @@ export default function Contact() {
             {/* Contact Form */}
             <div>
               <div className="bg-secondary/30 border border-border rounded-lg p-8">
-                <h2 className="text-2xl font-semibold mb-6">Send us a Message</h2>
+                <h2 className="text-2xl font-semibold mb-6">
+                  Send us a Message
+                </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
@@ -269,7 +273,9 @@ export default function Contact() {
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Partnerships</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  Partnerships
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Interested in collaborating? Let's talk about partnership
                   opportunities.

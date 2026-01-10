@@ -17,7 +17,9 @@ const CATEGORIES = [
 export default function Marketplace() {
   const [allAssets, setAllAssets] = useState<Asset[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
   const [sortBy, setSortBy] = useState("newest");
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -26,10 +28,7 @@ export default function Marketplace() {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const assets = await getPublishedAssets(
-          selectedCategory,
-          100
-        );
+        const assets = await getPublishedAssets(selectedCategory, 100);
         setAllAssets(assets);
       } catch (error) {
         console.error("Error fetching assets:", error);
@@ -61,7 +60,9 @@ export default function Marketplace() {
         case "price-high":
           return (b.price || 0) - (a.price || 0);
         default: // newest
-          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+          return (
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
       }
     });
 
@@ -79,7 +80,10 @@ export default function Marketplace() {
         {/* Search Bar */}
         <div className="mb-8">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search assets..."
@@ -190,7 +194,8 @@ export default function Marketplace() {
               <>
                 <div className="mb-6 flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    Showing {filteredAssets.length} {filteredAssets.length === 1 ? "asset" : "assets"}
+                    Showing {filteredAssets.length}{" "}
+                    {filteredAssets.length === 1 ? "asset" : "assets"}
                   </p>
                 </div>
 

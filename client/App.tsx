@@ -43,138 +43,138 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <Index />
-              </Layout>
-            }
-          />
-          <Route
-            path="/marketplace"
-            element={
-              <Layout>
-                <Marketplace />
-              </Layout>
-            }
-          />
-          <Route
-            path="/asset/:id"
-            element={
-              <Layout>
-                <AssetDetail />
-              </Layout>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <Layout>
-                <Login />
-              </Layout>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <Layout>
-                <Register />
-              </Layout>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <Layout>
-                <Dashboard />
-              </Layout>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <Layout>
-                <About />
-              </Layout>
-            }
-          />
-          <Route
-            path="/upload"
-            element={
-              <Layout>
-                <Upload />
-              </Layout>
-            }
-          />
-          <Route
-            path="/collections"
-            element={
-              <Layout>
-                <Collections />
-              </Layout>
-            }
-          />
-          <Route
-            path="/blog"
-            element={
-              <Layout>
-                <Blog />
-              </Layout>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <Layout>
-                <Contact />
-              </Layout>
-            }
-          />
-          <Route
-            path="/privacy"
-            element={
-              <Layout>
-                <Privacy />
-              </Layout>
-            }
-          />
-          <Route
-            path="/terms"
-            element={
-              <Layout>
-                <Terms />
-              </Layout>
-            }
-          />
-          <Route
-            path="/cookies"
-            element={
-              <Layout>
-                <Cookies />
-              </Layout>
-            }
-          />
-          <Route
-            path="/legal"
-            element={
-              <Layout>
-                <Legal />
-              </Layout>
-            }
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route
-            path="*"
-            element={
-              <Layout>
-                <NotFound />
-              </Layout>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <Index />
+                </Layout>
+              }
+            />
+            <Route
+              path="/marketplace"
+              element={
+                <Layout>
+                  <Marketplace />
+                </Layout>
+              }
+            />
+            <Route
+              path="/asset/:id"
+              element={
+                <Layout>
+                  <AssetDetail />
+                </Layout>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Layout>
+                  <Login />
+                </Layout>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <Layout>
+                  <Register />
+                </Layout>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <Layout>
+                  <About />
+                </Layout>
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                <Layout>
+                  <Upload />
+                </Layout>
+              }
+            />
+            <Route
+              path="/collections"
+              element={
+                <Layout>
+                  <Collections />
+                </Layout>
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <Layout>
+                  <Blog />
+                </Layout>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <Layout>
+                  <Contact />
+                </Layout>
+              }
+            />
+            <Route
+              path="/privacy"
+              element={
+                <Layout>
+                  <Privacy />
+                </Layout>
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <Layout>
+                  <Terms />
+                </Layout>
+              }
+            />
+            <Route
+              path="/cookies"
+              element={
+                <Layout>
+                  <Cookies />
+                </Layout>
+              }
+            />
+            <Route
+              path="/legal"
+              element={
+                <Layout>
+                  <Legal />
+                </Layout>
+              }
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route
+              path="*"
+              element={
+                <Layout>
+                  <NotFound />
+                </Layout>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

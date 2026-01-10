@@ -35,11 +35,17 @@ export default function Privacy() {
                     2.1 Information You Provide Directly
                   </h3>
                   <ul className="list-disc pl-5 space-y-2 mt-2">
-                    <li>Account registration information (name, email, password)</li>
+                    <li>
+                      Account registration information (name, email, password)
+                    </li>
                     <li>Profile information (avatar, bio, location)</li>
-                    <li>Payment information (processed securely by third parties)</li>
+                    <li>
+                      Payment information (processed securely by third parties)
+                    </li>
                     <li>Asset upload details and descriptions</li>
-                    <li>Communication with us through contact forms or support</li>
+                    <li>
+                      Communication with us through contact forms or support
+                    </li>
                   </ul>
                 </div>
 
@@ -155,7 +161,11 @@ export default function Privacy() {
               </h2>
               <p>
                 Our website uses cookies to enhance your experience. For more
-                information, please visit our <a href="/cookies" className="text-primary hover:underline">Cookie Policy</a>.
+                information, please visit our{" "}
+                <a href="/cookies" className="text-primary hover:underline">
+                  Cookie Policy
+                </a>
+                .
               </p>
             </section>
 
@@ -178,7 +188,9 @@ export default function Privacy() {
                 us at:
               </p>
               <div className="bg-secondary/30 border border-border rounded-lg p-4 mt-4">
-                <p className="font-semibold text-foreground">RbxAssets Privacy Team</p>
+                <p className="font-semibold text-foreground">
+                  RbxAssets Privacy Team
+                </p>
                 <p>Email: privacy@rbxassets.com</p>
                 <p>Address: 123 Creator Street, San Francisco, CA 94102</p>
               </div>
