@@ -171,6 +171,17 @@ export default function AdminPanel() {
     }
   };
 
+  const handleDeleteBroadcastMessage = async (messageId: string) => {
+    try {
+      await deleteBroadcastMessage(messageId);
+      setBroadcastMessages((prev) => prev.filter((m) => m.id !== messageId));
+      toast.success("Message deleted");
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      toast.error("Failed to delete message");
+    }
+  };
+
   // Filter users based on search
   const filteredUsers = users.filter(
     (u) =>
