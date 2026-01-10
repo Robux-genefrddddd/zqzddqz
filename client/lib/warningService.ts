@@ -25,6 +25,8 @@ export interface Warning {
   createdAt: Date;
   isActive: boolean;
   details?: string;
+  // Only for warnings: tracks if user has acknowledged
+  acknowledgedAt?: Date;
 }
 
 const WARNINGS_COLLECTION = "user_warnings";
@@ -97,31 +99,29 @@ export async function createWarning(
   durationDays?: number,
 ): Promise<string> {
   try {
-    const warningData: Omit<Warning, "id"> = {
+    const docData: any = {
       userId,
       adminId,
       adminName,
       type,
       reason,
-      createdAt: new Date(),
+      createdAt: Timestamp.now(),
       isActive: true,
-      details,
     };
+
+    // Add optional fields only if they have values
+    if (details) {
+      docData.details = details;
+    }
 
     // Add expiration for temporary warnings/suspensions
     if (durationDays && type !== "ban") {
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + durationDays);
-      warningData.expiresAt = expiresAt;
+      docData.expiresAt = Timestamp.fromDate(expiresAt);
     }
 
-    const docRef = await addDoc(collection(db, WARNINGS_COLLECTION), {
-      ...warningData,
-      createdAt: Timestamp.now(),
-      expiresAt: warningData.expiresAt
-        ? Timestamp.fromDate(warningData.expiresAt)
-        : undefined,
-    });
+    const docRef = await addDoc(collection(db, WARNINGS_COLLECTION), docData);
 
     return docRef.id;
   } catch (error) {
@@ -153,6 +153,19 @@ export async function deleteWarning(warningId: string): Promise<void> {
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting warning:", error);
+    throw error;
+  }
+}
+
+// Mark a warning as acknowledged by user (warnings only)
+export async function acknowledgeWarning(warningId: string): Promise<void> {
+  try {
+    const docRef = doc(db, WARNINGS_COLLECTION, warningId);
+    await updateDoc(docRef, {
+      acknowledgedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error("Error acknowledging warning:", error);
     throw error;
   }
 }
