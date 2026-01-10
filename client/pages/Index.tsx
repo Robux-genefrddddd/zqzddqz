@@ -94,26 +94,26 @@ const featuredAssets: Asset[] = [
 export default function Index() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Hero Section - Minimal, Content-Focused */}
-      <section className="border-b border-border/50 py-16 md:py-24">
+      {/* Hero Section - Content-Focused */}
+      <section className="border-b border-border/20 py-16 md:py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl space-y-8">
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="flex items-center gap-2">
-                <div className="h-px w-6 bg-accent/50" />
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Asset Marketplace
+                <div className="h-px w-6 bg-accent/40" />
+                <span className="text-xs font-medium text-accent uppercase tracking-wider">
+                  Creator Marketplace
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Discover Digital Assets
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">
+                Assets for Creators
               </h1>
 
               <p className="text-base text-muted-foreground max-w-2xl">
                 Professional marketplace for 3D models, scripts, UI components,
-                animations, and more. From indie creators to established studios
-                — find what you need.
+                animations, and resources. Find what studios and developers use
+                daily.
               </p>
             </div>
 
@@ -121,33 +121,37 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 to="/marketplace"
-                className="flex-1 flex items-center gap-2 px-4 py-2.5 bg-secondary border border-border/50 rounded-sm text-muted-foreground hover:text-foreground transition-colors text-sm"
+                className="flex-1 flex items-center gap-2 px-4 py-3 bg-secondary/40 border border-border/30 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-all text-sm"
               >
                 <Search size={16} />
-                <span>Browse marketplace</span>
+                <span>Browse all assets</span>
               </Link>
               <Link
                 to="/marketplace"
-                className="flex items-center gap-2 px-5 py-2.5 bg-accent text-primary-foreground font-medium rounded-sm hover:opacity-90 transition-all text-sm"
+                className="flex items-center gap-2 px-6 py-3 bg-accent text-primary-foreground font-medium rounded-xl hover:opacity-90 transition-all text-sm"
               >
-                Explore
+                Explore Now
                 <ArrowRight size={16} />
               </Link>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 pt-4">
-              <div>
+              <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
                 <p className="text-2xl font-bold">10K+</p>
-                <p className="text-xs text-muted-foreground">Assets</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Quality Assets
+                </p>
               </div>
-              <div>
+              <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
                 <p className="text-2xl font-bold">50K+</p>
-                <p className="text-xs text-muted-foreground">Members</p>
+                <p className="text-xs text-muted-foreground mt-1">Creators</p>
               </div>
-              <div>
+              <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
                 <p className="text-2xl font-bold">$2M+</p>
-                <p className="text-xs text-muted-foreground">Distributed</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Distributed
+                </p>
               </div>
             </div>
           </div>
@@ -155,10 +159,10 @@ export default function Index() {
       </section>
 
       {/* Categories Section */}
-      <section className="border-b border-border/50 py-12 md:py-16">
+      <section className="border-b border-border/20 py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <h2 className="text-lg font-bold">Categories</h2>
+            <h2 className="text-lg font-bold">Browse by Category</h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -172,7 +176,7 @@ export default function Index() {
               <Link
                 key={cat}
                 to="/marketplace"
-                className="p-4 bg-card border border-border/50 rounded-sm hover:border-border/80 transition-all text-sm font-medium text-center"
+                className="p-4 bg-secondary/30 border border-border/30 rounded-2xl hover:border-border/50 hover:bg-secondary/50 transition-all text-sm font-medium text-center"
               >
                 {cat}
               </Link>
@@ -186,9 +190,9 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-lg font-bold">Featured Assets</h2>
+              <h2 className="text-lg font-bold">Featured & Trending</h2>
               <p className="text-xs text-muted-foreground mt-1">
-                Recently added and trending
+                Hand-picked assets from quality creators
               </p>
             </div>
             <Link
@@ -199,7 +203,7 @@ export default function Index() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {featuredAssets.map((asset) => (
               <AssetCard key={asset.id} asset={asset} />
             ))}
