@@ -40,6 +40,13 @@ import { logoutUser } from "@/lib/auth";
 import { WarningsSection } from "@/components/WarningsSection";
 import { EditAssetDialog } from "@/components/EditAssetDialog";
 import { UpdateFileDialog } from "@/components/UpdateFileDialog";
+import { ScheduleUploadDialog } from "@/components/ScheduleUploadDialog";
+import {
+  getUserScheduledUploads,
+  ScheduledUpload,
+  cancelScheduledUpload,
+  getTimeRemaining,
+} from "@/lib/scheduledUploadService";
 import { toast } from "sonner";
 
 export default function Dashboard() {
