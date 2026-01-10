@@ -28,7 +28,7 @@ export function NavBar({
                 className="h-5 object-contain"
               />
               <span className="font-bold text-sm hidden sm:inline tracking-tight text-foreground">
-                AssetHub
+                RbxAssets
               </span>
             </div>
           </Link>
