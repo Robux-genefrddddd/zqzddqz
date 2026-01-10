@@ -199,29 +199,29 @@ export default function Marketplace() {
             {/* Mobile Filter Button */}
             <button
               onClick={() => setMobileFiltersOpen(true)}
-              className="md:hidden mb-6 px-4 py-2 bg-secondary/50 border border-border rounded-lg font-medium w-full"
+              className="md:hidden mb-8 px-4 py-2 bg-white/5 border border-white/10 rounded-lg font-medium text-sm w-full hover:bg-white/8 transition-colors"
             >
               Filters & Sort
             </button>
 
             {loading ? (
-              <div className="flex items-center justify-center py-12">
+              <div className="flex items-center justify-center py-16">
                 <div className="text-center space-y-4">
-                  <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
-                  <p className="text-muted-foreground">Loading assets...</p>
+                  <div className="w-10 h-10 border-3 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
+                  <p className="text-sm text-muted-foreground">Loading assets...</p>
                 </div>
               </div>
             ) : filteredAssets.length === 0 ? (
-              <div className="bg-secondary/30 border border-border rounded-lg p-12 text-center space-y-4">
-                <p className="text-lg text-muted-foreground">No assets found</p>
+              <div className="border border-white/5 rounded-lg p-16 text-center space-y-3 bg-white/2">
+                <p className="text-base font-medium text-foreground/80">No assets found</p>
                 <p className="text-sm text-muted-foreground">
                   Try adjusting your search or filters
                 </p>
               </div>
             ) : (
               <>
-                <div className="mb-6 flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground">
+                <div className="mb-8 flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground/80">
                     Showing {filteredAssets.length}{" "}
                     {filteredAssets.length === 1 ? "asset" : "assets"}
                   </p>
