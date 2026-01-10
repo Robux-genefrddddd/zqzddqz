@@ -2,7 +2,21 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, Users, Mail, Shield } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  Users,
+  Mail,
+  Shield,
+  Search,
+  Info as InfoIcon,
+  FileUp,
+  BarChart3,
+  MessageSquare,
+  Lock,
+  Plus,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { logoutUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -120,9 +134,19 @@ export function NavBar() {
           <div className="flex items-center gap-3 flex-1">
             <button
               onClick={toggleMenu}
-              className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors flex-shrink-0"
+              className="p-2 hover:bg-secondary/40 rounded-lg transition-all duration-200 flex-shrink-0 group"
             >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              {menuOpen ? (
+                <X
+                  size={20}
+                  className="text-foreground group-hover:text-primary transition-colors"
+                />
+              ) : (
+                <Menu
+                  size={20}
+                  className="text-foreground group-hover:text-primary transition-colors"
+                />
+              )}
             </button>
             <Link to="/" className="flex items-center gap-2">
               <img
@@ -258,32 +282,36 @@ export function NavBar() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -300, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border-r border-blue-500/20 overflow-y-auto z-[9999] shadow-2xl"
+                className="fixed left-0 top-0 bottom-0 w-64 bg-card border-r border-border/30 overflow-y-auto z-[9999] shadow-lg"
               >
                 <div className="flex flex-col h-full">
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.3 }}
-                    className="px-6 py-6 border-b border-blue-500/10 bg-gradient-to-r from-blue-500/5 to-transparent"
+                    className="px-6 py-6 border-b border-border/20 bg-background/50"
                   >
-                    <h2 className="text-xl font-bold text-white mb-1">Menu</h2>
-                    <p className="text-xs text-slate-400">
-                      Quick access to features
+                    <h2 className="text-lg font-bold text-foreground">
+                      Navigation
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Browse & manage
                     </p>
                   </motion.div>
 
                   <div className="flex-1 overflow-y-auto">
                     <div className="px-4 py-6">
-                      <motion.p
+                      <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.15 }}
-                        className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2"
+                        className="mb-4"
                       >
-                        Explore
-                      </motion.p>
-                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
+                          Explore
+                        </p>
+                      </motion.div>
+                      <div className="space-y-1">
                         <motion.div
                           custom={0}
                           initial="hidden"
@@ -292,20 +320,16 @@ export function NavBar() {
                         >
                           <Link
                             to="/marketplace"
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                             onClick={closeMenu}
                           >
-                            <span className="text-xl group-hover:scale-110 transition-transform">
-                              📦
+                            <Search
+                              size={18}
+                              className="text-muted-foreground group-hover:text-primary"
+                            />
+                            <span className="text-sm font-medium">
+                              Marketplace
                             </span>
-                            <div>
-                              <div className="text-sm font-semibold">
-                                Marketplace
-                              </div>
-                              <div className="text-xs text-slate-500">
-                                Browse assets
-                              </div>
-                            </div>
                           </Link>
                         </motion.div>
                         <motion.div
@@ -316,20 +340,14 @@ export function NavBar() {
                         >
                           <Link
                             to="/support"
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                             onClick={closeMenu}
                           >
-                            <span className="text-xl group-hover:scale-110 transition-transform">
-                              🆘
-                            </span>
-                            <div>
-                              <div className="text-sm font-semibold">
-                                Support
-                              </div>
-                              <div className="text-xs text-slate-500">
-                                Get help
-                              </div>
-                            </div>
+                            <Mail
+                              size={18}
+                              className="text-muted-foreground group-hover:text-primary"
+                            />
+                            <span className="text-sm font-medium">Support</span>
                           </Link>
                         </motion.div>
                         <motion.div
@@ -340,18 +358,14 @@ export function NavBar() {
                         >
                           <Link
                             to="/about"
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                             onClick={closeMenu}
                           >
-                            <span className="text-xl group-hover:scale-110 transition-transform">
-                              ℹ️
-                            </span>
-                            <div>
-                              <div className="text-sm font-semibold">About</div>
-                              <div className="text-xs text-slate-500">
-                                Learn more
-                              </div>
-                            </div>
+                            <InfoIcon
+                              size={18}
+                              className="text-muted-foreground group-hover:text-primary"
+                            />
+                            <span className="text-sm font-medium">About</span>
                           </Link>
                         </motion.div>
                       </div>
@@ -363,16 +377,16 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.25 }}
-                          className="px-4 py-6 border-t border-blue-500/10"
+                          className="px-4 py-6 border-t border-border/20"
                         >
-                          <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
                             Account
                           </p>
                           <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3, duration: 0.3 }}
-                            className="bg-gradient-to-br from-blue-500/15 to-blue-500/5 rounded-xl p-4 mb-4 border border-blue-500/20"
+                            className="bg-secondary/30 rounded-lg p-4 mb-4 border border-border/20"
                           >
                             <div className="flex items-center gap-3">
                               <img
@@ -382,19 +396,19 @@ export function NavBar() {
                                     userProfile.username
                                 }
                                 alt={userProfile.username}
-                                className="w-10 h-10 rounded-lg object-cover border border-blue-500/30"
+                                className="w-10 h-10 rounded-md object-cover border border-border/30"
                               />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-white truncate">
+                                <p className="text-sm font-semibold text-foreground truncate">
                                   {userProfile.username}
                                 </p>
-                                <p className="text-xs text-slate-500 truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {userProfile.email}
                                 </p>
                               </div>
                             </div>
                           </motion.div>
-                          <div className="space-y-2">
+                          <div className="space-y-1">
                             <motion.div
                               custom={3}
                               initial="hidden"
@@ -403,20 +417,16 @@ export function NavBar() {
                             >
                               <Link
                                 to="/dashboard"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                                 onClick={closeMenu}
                               >
-                                <span className="text-xl group-hover:scale-110 transition-transform">
-                                  📊
+                                <BarChart3
+                                  size={18}
+                                  className="text-muted-foreground group-hover:text-primary"
+                                />
+                                <span className="text-sm font-medium">
+                                  Dashboard
                                 </span>
-                                <div>
-                                  <div className="text-sm font-semibold">
-                                    Dashboard
-                                  </div>
-                                  <div className="text-xs text-slate-500">
-                                    View stats
-                                  </div>
-                                </div>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -427,20 +437,13 @@ export function NavBar() {
                             >
                               <Link
                                 to="/upload"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/30 to-blue-500/10 hover:from-blue-500/40 hover:to-blue-500/20 transition-all duration-200 font-semibold text-blue-300 group border border-blue-500/30"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
                                 onClick={closeMenu}
                               >
-                                <span className="text-xl group-hover:scale-110 transition-transform">
-                                  ⬆️
+                                <FileUp size={18} className="text-primary" />
+                                <span className="text-sm font-semibold">
+                                  Upload Asset
                                 </span>
-                                <div>
-                                  <div className="text-sm font-bold">
-                                    Upload Asset
-                                  </div>
-                                  <div className="text-xs text-blue-400/70">
-                                    Create new
-                                  </div>
-                                </div>
                               </Link>
                             </motion.div>
                           </div>
@@ -450,12 +453,12 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
-                          className="px-4 py-6 border-t border-blue-500/10"
+                          className="px-4 py-6 border-t border-border/20"
                         >
-                          <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
                             Tools
                           </p>
-                          <div className="space-y-2">
+                          <div className="space-y-1">
                             <motion.div
                               custom={5}
                               initial="hidden"
@@ -464,20 +467,16 @@ export function NavBar() {
                             >
                               <Link
                                 to="/groups"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                                 onClick={closeMenu}
                               >
-                                <span className="text-xl group-hover:scale-110 transition-transform">
-                                  👥
+                                <Users
+                                  size={18}
+                                  className="text-muted-foreground group-hover:text-primary"
+                                />
+                                <span className="text-sm font-medium">
+                                  Groups
                                 </span>
-                                <div>
-                                  <div className="text-sm font-semibold">
-                                    Groups
-                                  </div>
-                                  <div className="text-xs text-slate-500">
-                                    Manage groups
-                                  </div>
-                                </div>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -488,25 +487,21 @@ export function NavBar() {
                             >
                               <Link
                                 to="/messages"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group relative"
                                 onClick={closeMenu}
                               >
-                                <span className="text-xl group-hover:scale-110 transition-transform">
-                                  💬
+                                <MessageSquare
+                                  size={18}
+                                  className="text-muted-foreground group-hover:text-primary"
+                                />
+                                <span className="text-sm font-medium flex-1">
+                                  Messages
                                 </span>
-                                <div className="flex-1">
-                                  <div className="text-sm font-semibold">
-                                    Messages
-                                  </div>
-                                  <div className="text-xs text-slate-500">
-                                    Conversations
-                                  </div>
-                                </div>
                                 {unreadCount > 0 && (
                                   <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-center"
                                   >
                                     {unreadCount > 9 ? "9+" : unreadCount}
                                   </motion.span>
@@ -522,9 +517,9 @@ export function NavBar() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.35 }}
-                            className="px-4 py-6 border-t border-blue-500/10"
+                            className="px-4 py-6 border-t border-border/20"
                           >
-                            <p className="text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-4 px-2">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
                               Admin
                             </p>
                             <motion.div
@@ -535,20 +530,13 @@ export function NavBar() {
                             >
                               <Link
                                 to="/admin"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-500/5 hover:from-amber-500/30 hover:to-amber-500/10 transition-all duration-200 font-semibold text-amber-400 border border-amber-500/20 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors duration-150 text-accent border border-accent/20 group"
                                 onClick={closeMenu}
                               >
-                                <span className="text-xl group-hover:scale-110 transition-transform">
-                                  ⚙️
+                                <Shield size={18} className="text-accent" />
+                                <span className="text-sm font-semibold">
+                                  Admin Panel
                                 </span>
-                                <div>
-                                  <div className="text-sm font-bold">
-                                    Admin Panel
-                                  </div>
-                                  <div className="text-xs text-amber-300/60">
-                                    Manage
-                                  </div>
-                                </div>
                               </Link>
                             </motion.div>
                           </motion.div>
@@ -559,12 +547,12 @@ export function NavBar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.25 }}
-                        className="px-4 py-6 border-t border-blue-500/10"
+                        className="px-4 py-6 border-t border-border/20"
                       >
-                        <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
                           Account
                         </p>
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                           <motion.div
                             custom={3}
                             initial="hidden"
@@ -573,20 +561,16 @@ export function NavBar() {
                           >
                             <Link
                               to="/login"
-                              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                               onClick={closeMenu}
                             >
-                              <span className="text-xl group-hover:scale-110 transition-transform">
-                                🔑
+                              <Lock
+                                size={18}
+                                className="text-muted-foreground group-hover:text-primary"
+                              />
+                              <span className="text-sm font-medium">
+                                Sign In
                               </span>
-                              <div>
-                                <div className="text-sm font-semibold">
-                                  Sign In
-                                </div>
-                                <div className="text-xs text-slate-500">
-                                  Login
-                                </div>
-                              </div>
                             </Link>
                           </motion.div>
                           <motion.div
@@ -597,20 +581,13 @@ export function NavBar() {
                           >
                             <Link
                               to="/register"
-                              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/30 to-blue-500/10 hover:from-blue-500/40 hover:to-blue-500/20 transition-all duration-200 font-semibold text-blue-300 group border border-blue-500/30"
+                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
                               onClick={closeMenu}
                             >
-                              <span className="text-xl group-hover:scale-110 transition-transform">
-                                ✨
+                              <Plus size={18} className="text-primary" />
+                              <span className="text-sm font-semibold">
+                                Create Account
                               </span>
-                              <div>
-                                <div className="text-sm font-bold">
-                                  Create Account
-                                </div>
-                                <div className="text-xs text-blue-400/70">
-                                  Join now
-                                </div>
-                              </div>
                             </Link>
                           </motion.div>
                         </div>
@@ -623,22 +600,17 @@ export function NavBar() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="border-t border-blue-500/10 px-4 py-4"
+                      className="border-t border-border/20 px-4 py-4"
                     >
                       <button
                         onClick={() => {
                           handleLogout();
                           closeMenu();
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 font-medium text-red-400 group"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-destructive/20 transition-colors duration-150 text-destructive group"
                       >
-                        <span className="text-xl group-hover:scale-110 transition-transform">
-                          🚪
-                        </span>
-                        <div className="text-left">
-                          <div className="text-sm font-semibold">Sign Out</div>
-                          <div className="text-xs text-red-300/60">Logout</div>
-                        </div>
+                        <LogOut size={18} className="text-destructive" />
+                        <span className="text-sm font-medium">Sign Out</span>
                       </button>
                     </motion.div>
                   )}
@@ -647,18 +619,18 @@ export function NavBar() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.45 }}
-                    className="border-t border-blue-500/10 px-4 py-4 flex justify-center"
+                    className="border-t border-border/20 px-4 py-4 flex justify-center"
                   >
                     <a
                       href="https://roblox.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="opacity-60 hover:opacity-100 transition-opacity"
+                      className="opacity-50 hover:opacity-100 transition-opacity"
                     >
                       <img
-                        src="https://i.ibb.co/B531Dsh6/roblox-logo-roblox-symbol-meaning-history-and-evolution-3-removebg-preview.png"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Roblox_Logo.svg/2048px-Roblox_Logo.svg.png"
                         alt="Roblox"
-                        className="h-5 object-contain"
+                        className="h-4 object-contain"
                       />
                     </a>
                   </motion.div>

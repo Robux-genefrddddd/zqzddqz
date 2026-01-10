@@ -28,15 +28,24 @@ export async function createNotification(
   data?: Record<string, any>,
 ): Promise<string> {
   try {
-    const docRef = await addDoc(collection(db, NOTIFICATIONS_COLLECTION), {
+    const notificationData: any = {
       userId,
       type,
       title,
       message,
-      data,
       read: false,
       createdAt: Timestamp.now(),
-    });
+    };
+
+    // Only add data if it's provided
+    if (data) {
+      notificationData.data = data;
+    }
+
+    const docRef = await addDoc(
+      collection(db, NOTIFICATIONS_COLLECTION),
+      notificationData,
+    );
 
     return docRef.id;
   } catch (error) {

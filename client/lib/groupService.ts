@@ -40,12 +40,12 @@ export async function createGroup(
       ...groupData,
       creatorId,
       creatorName,
-      creatorAvatar,
+      creatorAvatar: creatorAvatar || null,
       members: [
         {
           userId: creatorId,
           username: creatorName,
-          avatar: creatorAvatar,
+          avatar: creatorAvatar || null,
           role: "admin",
           joinedAt: Timestamp.now(),
           isActive: true,
@@ -250,16 +250,22 @@ export async function sendGroupMessage(
 ): Promise<string> {
   try {
     const messagesRef = collection(db, GROUPS_COLLECTION, groupId, "messages");
-    const docRef = await addDoc(messagesRef, {
+    const messageData: any = {
       groupId,
       senderId,
       senderName,
-      senderAvatar,
+      senderAvatar: senderAvatar || null,
       content,
-      imageUrl,
       timestamp: Timestamp.now(),
       isEdited: false,
-    });
+    };
+
+    // Only add imageUrl if it's provided
+    if (imageUrl) {
+      messageData.imageUrl = imageUrl;
+    }
+
+    const docRef = await addDoc(messagesRef, messageData);
 
     // Update group's updatedAt
     await updateGroup(groupId, { updatedAt: new Date() });
@@ -360,17 +366,26 @@ export async function sendGroupInvite(
   message?: string,
 ): Promise<string> {
   try {
-    const docRef = await addDoc(collection(db, GROUP_INVITES_COLLECTION), {
+    const inviteData: any = {
       groupId,
       groupName,
       inviterId,
       inviterName,
-      inviterAvatar,
+      inviterAvatar: inviterAvatar || null,
       inviteeId,
       invitationDate: Timestamp.now(),
       status: "pending",
-      message,
-    });
+    };
+
+    // Only add message if it's provided
+    if (message) {
+      inviteData.message = message;
+    }
+
+    const docRef = await addDoc(
+      collection(db, GROUP_INVITES_COLLECTION),
+      inviteData,
+    );
 
     return docRef.id;
   } catch (error) {
@@ -429,7 +444,7 @@ export async function acceptGroupInvite(
     const newMember: GroupMember = {
       userId,
       username,
-      avatar,
+      avatar: avatar || null,
       role: "member",
       joinedAt: new Date(),
       isActive: true,
