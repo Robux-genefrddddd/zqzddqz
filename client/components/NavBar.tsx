@@ -127,6 +127,15 @@ export function NavBar() {
     setMenuOpen(false);
   };
 
+  // Disable body scroll when menu is open
+  if (typeof window !== "undefined") {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }
+
   return (
     <>
       <nav className="sticky top-0 z-40 bg-background/98 backdrop-blur-sm border-b border-white/5">
@@ -282,36 +291,33 @@ export function NavBar() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -300, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="fixed left-0 top-0 bottom-0 w-64 bg-card border-r border-border/30 overflow-y-auto z-[9999] shadow-lg"
+                className="fixed left-0 top-0 bottom-0 w-56 bg-background border-r border-border/10 overflow-y-auto z-[9999]"
               >
                 <div className="flex flex-col h-full">
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.3 }}
-                    className="px-6 py-6 border-b border-border/20 bg-background/50"
+                    className="px-4 py-4 border-b border-border/10"
                   >
-                    <h2 className="text-lg font-bold text-foreground">
+                    <h2 className="text-sm font-semibold uppercase tracking-tight text-muted-foreground">
                       Navigation
                     </h2>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Browse & manage
-                    </p>
                   </motion.div>
 
                   <div className="flex-1 overflow-y-auto">
-                    <div className="px-4 py-6">
+                    <div className="px-3 py-3">
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.15 }}
-                        className="mb-4"
+                        className="mb-2"
                       >
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2">
                           Explore
                         </p>
                       </motion.div>
-                      <div className="space-y-1">
+                      <div className="space-y-0.5">
                         <motion.div
                           custom={0}
                           initial="hidden"
@@ -320,16 +326,14 @@ export function NavBar() {
                         >
                           <Link
                             to="/marketplace"
-                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                             onClick={closeMenu}
                           >
                             <Search
-                              size={18}
-                              className="text-muted-foreground group-hover:text-primary"
+                              size={16}
+                              className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                             />
-                            <span className="text-sm font-medium">
-                              Marketplace
-                            </span>
+                            <span className="font-medium">Marketplace</span>
                           </Link>
                         </motion.div>
                         <motion.div
@@ -340,14 +344,14 @@ export function NavBar() {
                         >
                           <Link
                             to="/support"
-                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                             onClick={closeMenu}
                           >
                             <Mail
-                              size={18}
-                              className="text-muted-foreground group-hover:text-primary"
+                              size={16}
+                              className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                             />
-                            <span className="text-sm font-medium">Support</span>
+                            <span className="font-medium">Support</span>
                           </Link>
                         </motion.div>
                         <motion.div
@@ -358,14 +362,14 @@ export function NavBar() {
                         >
                           <Link
                             to="/about"
-                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                             onClick={closeMenu}
                           >
                             <InfoIcon
-                              size={18}
-                              className="text-muted-foreground group-hover:text-primary"
+                              size={16}
+                              className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                             />
-                            <span className="text-sm font-medium">About</span>
+                            <span className="font-medium">About</span>
                           </Link>
                         </motion.div>
                       </div>
@@ -377,38 +381,36 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.25 }}
-                          className="px-4 py-6 border-t border-border/20"
+                          className="px-3 py-3 border-t border-border/10"
                         >
-                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                             Account
                           </p>
                           <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3, duration: 0.3 }}
-                            className="bg-secondary/30 rounded-lg p-4 mb-4 border border-border/20"
+                            className="flex items-center gap-2 px-2 py-2 mb-2"
                           >
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={
-                                  userProfile.profileImage ||
-                                  "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
-                                    userProfile.username
-                                }
-                                alt={userProfile.username}
-                                className="w-10 h-10 rounded-md object-cover border border-border/30"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-foreground truncate">
-                                  {userProfile.username}
-                                </p>
-                                <p className="text-xs text-muted-foreground truncate">
-                                  {userProfile.email}
-                                </p>
-                              </div>
+                            <img
+                              src={
+                                userProfile.profileImage ||
+                                "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+                                  userProfile.username
+                              }
+                              alt={userProfile.username}
+                              className="w-8 h-8 rounded object-cover"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-foreground truncate">
+                                {userProfile.username}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {userProfile.email}
+                              </p>
                             </div>
                           </motion.div>
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             <motion.div
                               custom={3}
                               initial="hidden"
@@ -417,16 +419,14 @@ export function NavBar() {
                             >
                               <Link
                                 to="/dashboard"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
                                 <BarChart3
-                                  size={18}
-                                  className="text-muted-foreground group-hover:text-primary"
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                                 />
-                                <span className="text-sm font-medium">
-                                  Dashboard
-                                </span>
+                                <span className="font-medium">Dashboard</span>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -437,13 +437,14 @@ export function NavBar() {
                             >
                               <Link
                                 to="/upload"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
-                                <FileUp size={18} className="text-primary" />
-                                <span className="text-sm font-semibold">
-                                  Upload Asset
-                                </span>
+                                <FileUp
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
+                                />
+                                <span className="font-medium">Upload</span>
                               </Link>
                             </motion.div>
                           </div>
@@ -453,12 +454,12 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
-                          className="px-4 py-6 border-t border-border/20"
+                          className="px-3 py-3 border-t border-border/10"
                         >
-                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                             Tools
                           </p>
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             <motion.div
                               custom={5}
                               initial="hidden"
@@ -467,16 +468,14 @@ export function NavBar() {
                             >
                               <Link
                                 to="/groups"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
                                 <Users
-                                  size={18}
-                                  className="text-muted-foreground group-hover:text-primary"
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                                 />
-                                <span className="text-sm font-medium">
-                                  Groups
-                                </span>
+                                <span className="font-medium">Groups</span>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -487,21 +486,21 @@ export function NavBar() {
                             >
                               <Link
                                 to="/messages"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group relative"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
                                 <MessageSquare
-                                  size={18}
-                                  className="text-muted-foreground group-hover:text-primary"
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                                 />
-                                <span className="text-sm font-medium flex-1">
+                                <span className="font-medium flex-1">
                                   Messages
                                 </span>
                                 {unreadCount > 0 && (
                                   <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-center"
+                                    className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-center flex-shrink-0"
                                   >
                                     {unreadCount > 9 ? "9+" : unreadCount}
                                   </motion.span>
@@ -517,9 +516,9 @@ export function NavBar() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.35 }}
-                            className="px-4 py-6 border-t border-border/20"
+                            className="px-3 py-3 border-t border-border/10"
                           >
-                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                               Admin
                             </p>
                             <motion.div
@@ -530,13 +529,14 @@ export function NavBar() {
                             >
                               <Link
                                 to="/admin"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors duration-150 text-accent border border-accent/20 group"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-accent hover:text-accent/80 hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
-                                <Shield size={18} className="text-accent" />
-                                <span className="text-sm font-semibold">
-                                  Admin Panel
-                                </span>
+                                <Shield
+                                  size={16}
+                                  className="text-accent flex-shrink-0"
+                                />
+                                <span className="font-medium">Admin</span>
                               </Link>
                             </motion.div>
                           </motion.div>
@@ -547,12 +547,12 @@ export function NavBar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.25 }}
-                        className="px-4 py-6 border-t border-border/20"
+                        className="px-3 py-3 border-t border-border/10"
                       >
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                           Account
                         </p>
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           <motion.div
                             custom={3}
                             initial="hidden"
@@ -561,16 +561,14 @@ export function NavBar() {
                           >
                             <Link
                               to="/login"
-                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                               onClick={closeMenu}
                             >
                               <Lock
-                                size={18}
-                                className="text-muted-foreground group-hover:text-primary"
+                                size={16}
+                                className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                               />
-                              <span className="text-sm font-medium">
-                                Sign In
-                              </span>
+                              <span className="font-medium">Sign In</span>
                             </Link>
                           </motion.div>
                           <motion.div
@@ -581,13 +579,14 @@ export function NavBar() {
                           >
                             <Link
                               to="/register"
-                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
+                              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                               onClick={closeMenu}
                             >
-                              <Plus size={18} className="text-primary" />
-                              <span className="text-sm font-semibold">
-                                Create Account
-                              </span>
+                              <Plus
+                                size={16}
+                                className="text-muted-foreground group-hover:text-primary flex-shrink-0"
+                              />
+                              <span className="font-medium">Sign Up</span>
                             </Link>
                           </motion.div>
                         </div>
@@ -600,17 +599,20 @@ export function NavBar() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="border-t border-border/20 px-4 py-4"
+                      className="border-t border-border/10 px-3 py-3 mt-auto"
                     >
                       <button
                         onClick={() => {
                           handleLogout();
                           closeMenu();
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-destructive/20 transition-colors duration-150 text-destructive group"
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors duration-150 group"
                       >
-                        <LogOut size={18} className="text-destructive" />
-                        <span className="text-sm font-medium">Sign Out</span>
+                        <LogOut
+                          size={16}
+                          className="text-muted-foreground flex-shrink-0"
+                        />
+                        <span className="font-medium">Sign Out</span>
                       </button>
                     </motion.div>
                   )}
@@ -619,18 +621,18 @@ export function NavBar() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.45 }}
-                    className="border-t border-border/20 px-4 py-4 flex justify-center"
+                    className="border-t border-border/10 px-3 py-3 flex justify-center"
                   >
                     <a
                       href="https://roblox.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="opacity-50 hover:opacity-100 transition-opacity"
+                      className="opacity-40 hover:opacity-70 transition-opacity"
                     >
                       <img
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Roblox_Logo.svg/2048px-Roblox_Logo.svg.png"
                         alt="Roblox"
-                        className="h-4 object-contain"
+                        className="h-3.5 object-contain"
                       />
                     </a>
                   </motion.div>

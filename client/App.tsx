@@ -34,6 +34,7 @@ import Groups from "./pages/Groups";
 import GroupDetail from "./pages/GroupDetail";
 import Messages from "./pages/Messages";
 import BanNotice from "./pages/BanNotice";
+import CreatorProfile from "./pages/CreatorProfile";
 import { useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -122,6 +123,16 @@ const App = () => (
                 <BanGuard>
                   <Layout>
                     <AssetDetail />
+                  </Layout>
+                </BanGuard>
+              }
+            />
+            <Route
+              path="/creator/:id"
+              element={
+                <BanGuard>
+                  <Layout>
+                    <CreatorProfile />
                   </Layout>
                 </BanGuard>
               }

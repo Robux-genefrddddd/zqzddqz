@@ -13,7 +13,21 @@ import {
   Loader,
   Trash2,
   FileDown,
+  Copy,
+  MoreVertical,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   getAsset,
   incrementAssetDownloads,
@@ -337,323 +351,340 @@ export default function AssetDetail() {
   const priceLabel =
     asset.price && asset.price > 0 ? `$${asset.price.toFixed(2)}` : "Free";
 
+  const copyAssetLink = () => {
+    const link = `${window.location.origin}/asset/${asset.id}`;
+    navigator.clipboard.writeText(link);
+    toast.success("Asset link copied to clipboard");
+  };
+
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Banner Image */}
-          <div className="md:col-span-2 flex justify-center">
-            <div className="rounded-lg overflow-hidden bg-muted w-full max-w-2xl h-80 border border-border/30">
+    <div className="min-h-screen bg-background py-6">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header with Image & Metadata */}
+        <div className="grid lg:grid-cols-[1fr_380px] gap-8 mb-8">
+          {/* Asset Image */}
+          <div className="flex items-center justify-start lg:justify-center">
+            <div className="relative rounded-xl overflow-hidden bg-muted border border-border/15 shadow-sm w-full max-w-2xl h-72 lg:h-96">
               <img
                 src={asset.imageUrl}
                 alt={asset.name}
                 className="w-full h-full object-cover"
               />
+
+              {/* Top-right action menu */}
+              <TooltipProvider>
+                <div className="absolute top-3 right-3 flex items-center gap-2">
+                  {/* Price Badge */}
+                  <span
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium ${
+                      asset.price && asset.price > 0
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-accent/20 text-accent"
+                    }`}
+                  >
+                    {priceLabel}
+                  </span>
+
+                  {/* 3-dot Menu */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-2 rounded-lg bg-black/40 hover:bg-black/60 text-white transition-colors backdrop-blur-sm border border-white/10">
+                        <MoreVertical size={16} />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={handleToggleFavorite}>
+                        <Heart
+                          size={14}
+                          className="mr-2"
+                          fill={isFav ? "currentColor" : "none"}
+                        />
+                        {isFav ? "Remove from Favorites" : "Add to Favorites"}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={copyAssetLink}>
+                        <Copy size={14} className="mr-2" />
+                        Copy Link
+                      </DropdownMenuItem>
+                      {user && user.uid === asset.authorId && (
+                        <>
+                          <hr className="my-1" />
+                          <DropdownMenuItem
+                            onClick={handleDeleteAsset}
+                            disabled={deletingAsset}
+                            className="text-red-400 focus:text-red-400"
+                          >
+                            <Trash2 size={14} className="mr-2" />
+                            {deletingAsset ? "Deleting..." : "Delete Asset"}
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TooltipProvider>
             </div>
           </div>
 
-          {/* Info Panel */}
-          <div className="space-y-4">
-            {/* Price Badge */}
-            <div>
-              <span
-                className={`px-3 py-1 rounded-lg text-xs font-semibold ${
-                  asset.price && asset.price > 0
-                    ? "bg-green-500/15 text-green-400"
-                    : "bg-accent/15 text-accent"
-                }`}
-              >
-                {priceLabel}
-              </span>
-            </div>
-
+          {/* Metadata Panel */}
+          <div className="flex flex-col gap-4">
             {/* Title & Rating */}
             <div>
-              <h1 className="text-2xl font-bold mb-2">{asset.name}</h1>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <h1 className="text-2xl font-bold mb-2 leading-tight">
+                {asset.name}
+              </h1>
+              <div className="flex items-center gap-3 text-sm">
                 <div className="flex items-center gap-1">
-                  <Star size={14} className="fill-accent text-accent" />
-                  <span className="font-medium">{asset.rating.toFixed(1)}</span>
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={14}
+                        className={
+                          star <= Math.round(asset.rating)
+                            ? "fill-accent text-accent"
+                            : "text-muted-foreground/20"
+                        }
+                      />
+                    ))}
+                  </div>
+                  <span className="font-semibold">
+                    {asset.rating.toFixed(1)}
+                  </span>
+                  <span className="text-muted-foreground">
+                    ({asset.reviews})
+                  </span>
                 </div>
-                <span>({asset.reviews} reviews)</span>
               </div>
             </div>
 
-            {/* Category */}
-            <div>
-              <p className="text-xs text-muted-foreground mb-1">Category</p>
-              <p className="text-sm font-medium text-foreground">
-                {asset.category}
-              </p>
-            </div>
-
-            {/* Stats */}
-            <div className="border-t border-b border-border/20 py-3 space-y-2">
-              <div className="flex items-center justify-between text-sm">
+            {/* Quick Stats */}
+            <div className="space-y-2 border-t border-border/20 pt-3">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Category</span>
+                <span className="font-medium">{asset.category}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Downloads</span>
                 <div className="flex items-center gap-1.5">
-                  <Download size={14} />
+                  <Download size={12} />
                   <span className="font-medium">{asset.downloads}</span>
                 </div>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-2 pt-2">
-              <button
-                onClick={handleDownloadAsset}
-                disabled={downloading}
-                className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
-              >
-                <FileDown size={14} />
-                {downloading ? "Downloading..." : "Download Asset"}
-              </button>
-              <button
-                onClick={handleToggleFavorite}
-                className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
-                  isFav
-                    ? "bg-accent/20 border border-accent/30 text-accent hover:bg-accent/30"
-                    : "bg-secondary border border-border/30 text-secondary-foreground hover:bg-secondary/80"
-                }`}
-              >
-                <Heart size={14} fill={isFav ? "currentColor" : "none"} />
-                {isFav ? "Saved" : "Save Asset"}
-              </button>
+            {/* Primary Download Button */}
+            <button
+              onClick={handleDownloadAsset}
+              disabled={downloading}
+              className="w-full py-2 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center gap-2 mt-auto"
+            >
+              <FileDown size={14} />
+              {downloading ? "Downloading..." : "Download"}
+            </button>
 
-              {/* Delete Button (only for asset author) */}
-              {user && user.uid === asset.authorId && (
-                <button
-                  onClick={handleDeleteAsset}
-                  disabled={deletingAsset}
-                  className="w-full py-2.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 font-medium text-sm hover:bg-red-500/30 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
-                >
-                  <Trash2 size={14} />
-                  {deletingAsset ? "Deleting..." : "Delete Asset"}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Description & Creator */}
-        <div className="bg-secondary/15 border border-border/15 rounded-lg p-6 space-y-6">
-          {/* Description */}
-          <div>
-            <h2 className="text-lg font-bold mb-3">About This Asset</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {asset.description}
-            </p>
-          </div>
-
-          {/* Tags */}
-          {asset.tags && asset.tags.length > 0 && (
-            <div>
-              <h3 className="font-semibold mb-3 text-sm">Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                {asset.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-lg"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Creator Section */}
-          <div className="pt-4 border-t border-border/20">
-            <h3 className="font-semibold mb-4 text-sm">Creator</h3>
-            {authorProfile ? (
-              <div className="flex items-center justify-between p-4 bg-background/50 border border-border/30 rounded-lg">
-                <div className="flex items-center gap-3">
+            {/* Creator Preview */}
+            {authorProfile && (
+              <div className="pt-2 border-t border-border/20">
+                <p className="text-xs text-muted-foreground mb-2">Creator</p>
+                <div className="flex items-center gap-2">
                   <img
                     src={
                       authorProfile.profileImage ||
                       `https://api.dicebear.com/7.x/avataaars/svg?seed=${authorProfile.username}`
                     }
                     alt={authorProfile.username}
-                    className="w-12 h-12 rounded-lg object-cover"
+                    className="w-8 h-8 rounded object-cover"
                   />
-                  <div>
-                    <p className="font-semibold text-sm text-foreground">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold truncate">
                       {authorProfile.displayName}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      @{authorProfile.username}
-                    </p>
                     {authorProfile.role && (
-                      <span className="inline-block mt-1 px-2 py-0.5 bg-primary/20 text-primary text-xs rounded capitalize">
+                      <span className="text-xs text-muted-foreground capitalize">
                         {authorProfile.role}
                       </span>
                     )}
                   </div>
+                  <Link
+                    to={`/creator/${authorProfile.uid}`}
+                    className="text-xs font-medium text-accent hover:text-accent/80 transition-colors whitespace-nowrap"
+                  >
+                    View
+                  </Link>
                 </div>
-                <Link
-                  to={`/creator/${authorProfile.uid}`}
-                  className="text-accent hover:text-accent/80 text-sm font-medium"
-                >
-                  View Profile
-                </Link>
-              </div>
-            ) : (
-              <div className="p-4 bg-background/50 border border-border/30 rounded-lg text-muted-foreground text-sm">
-                Creator information unavailable
               </div>
             )}
           </div>
         </div>
 
+        {/* About Section */}
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold uppercase text-muted-foreground mb-3">
+            About
+          </h2>
+          <p className="text-sm text-foreground/85 leading-relaxed max-w-3xl">
+            {asset.description}
+          </p>
+
+          {/* Tags */}
+          {asset.tags && asset.tags.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {asset.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-md font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Reviews Section */}
-        <div className="mt-8 space-y-6">
-          <div>
-            <h2 className="text-lg font-bold mb-4">Reviews & Ratings</h2>
+        {reviews.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-sm font-semibold uppercase text-muted-foreground mb-4">
+              Reviews ({reviews.length})
+            </h2>
 
-            {/* Review Form */}
-            {user ? (
-              <form
-                onSubmit={handleSubmitReview}
-                className="bg-secondary/15 border border-border/15 rounded-lg p-6 mb-6"
-              >
-                <h3 className="font-semibold mb-4">
-                  {userReview ? "Edit Your Review" : "Leave a Review"}
-                </h3>
-
-                {/* Rating */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">
-                    Rating <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex gap-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onMouseEnter={() => setHoveredRating(star)}
-                        onMouseLeave={() => setHoveredRating(0)}
-                        onClick={() => setRating(star)}
-                        className="transition-transform hover:scale-110"
-                      >
-                        <Star
-                          size={28}
-                          className={`transition-colors ${
-                            star <= (hoveredRating || rating)
-                              ? "fill-accent text-accent"
-                              : "text-muted-foreground/30"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">
-                    Your Review <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    value={reviewMessage}
-                    onChange={(e) => setReviewMessage(e.target.value)}
-                    placeholder="Share your thoughts about this asset..."
-                    rows={4}
-                    className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={submittingReview}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium text-sm disabled:opacity-50"
-                  >
-                    {submittingReview
-                      ? "Posting..."
-                      : userReview
-                        ? "Update Review"
-                        : "Post Review"}
-                  </button>
-
-                  {userReview && (
-                    <button
-                      type="button"
-                      onClick={handleDeleteReview}
-                      className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all font-medium text-sm flex items-center gap-2"
-                    >
-                      <Trash2 size={16} />
-                      Delete Review
-                    </button>
-                  )}
-                </div>
-              </form>
-            ) : (
-              <div className="bg-secondary/15 border border-border/15 rounded-lg p-6 mb-6 text-center">
-                <p className="text-muted-foreground mb-4">
-                  Sign in to leave a review
-                </p>
-                <Link to="/login">
-                  <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium text-sm">
-                    Sign In
-                  </button>
-                </Link>
-              </div>
-            )}
-
-            {/* Existing Reviews */}
-            <div className="space-y-3">
-              <h3 className="font-semibold text-sm mb-4">
-                {reviews.length === 0
-                  ? "No reviews yet"
-                  : `${reviews.length} Review${reviews.length !== 1 ? "s" : ""}`}
-              </h3>
-
+            <div className="space-y-3 max-w-3xl">
               {reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-secondary/15 border border-border/15 rounded-lg p-4 space-y-2"
+                  className="border border-border/20 rounded-lg p-3 space-y-2"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <div className="flex gap-0.5">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
-                            size={14}
+                            size={12}
                             className={
                               star <= review.rating
                                 ? "fill-accent text-accent"
-                                : "text-muted-foreground/30"
+                                : "text-muted-foreground/20"
                             }
                           />
                         ))}
                       </div>
-                      <span className="text-sm font-medium text-foreground">
-                        {review.rating.toFixed(1)}
+                      <span className="text-xs font-semibold">
+                        {review.userName}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {review.createdAt.toLocaleDateString()}
                     </p>
                   </div>
-
-                  <p className="text-sm font-medium text-foreground">
-                    {review.userName}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {review.message}
-                  </p>
+                  <p className="text-sm text-foreground/85">{review.message}</p>
                 </div>
               ))}
             </div>
+
+            {/* User Review Form - Compact */}
+            {user && (
+              <div className="mt-4 pt-4 border-t border-border/20">
+                {userReview ? (
+                  <form onSubmit={handleSubmitReview} className="space-y-2">
+                    <p className="text-xs font-semibold mb-3">
+                      Edit Your Review
+                    </p>
+                    <div className="flex gap-1 mb-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          onClick={() => setRating(star)}
+                          className="transition-transform"
+                        >
+                          <Star
+                            size={16}
+                            className={`transition-colors ${
+                              star <= (hoveredRating || rating)
+                                ? "fill-accent text-accent"
+                                : "text-muted-foreground/20"
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      value={reviewMessage}
+                      onChange={(e) => setReviewMessage(e.target.value)}
+                      placeholder="Update your review..."
+                      rows={3}
+                      className="w-full px-3 py-2 text-xs bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
+                    />
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        type="submit"
+                        disabled={submittingReview}
+                        className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50"
+                      >
+                        {submittingReview ? "Saving..." : "Update"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDeleteReview}
+                        className="px-3 py-1.5 text-xs bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all font-medium flex items-center gap-1"
+                      >
+                        <Trash2 size={12} />
+                        Delete
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <form onSubmit={handleSubmitReview} className="space-y-2">
+                    <p className="text-xs font-semibold mb-3">Leave a Review</p>
+                    <div className="flex gap-1 mb-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          onClick={() => setRating(star)}
+                          className="transition-transform"
+                        >
+                          <Star
+                            size={16}
+                            className={`transition-colors ${
+                              star <= (hoveredRating || rating)
+                                ? "fill-accent text-accent"
+                                : "text-muted-foreground/20"
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      value={reviewMessage}
+                      onChange={(e) => setReviewMessage(e.target.value)}
+                      placeholder="Share your thoughts..."
+                      rows={3}
+                      className="w-full px-3 py-2 text-xs bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
+                    />
+                    <button
+                      type="submit"
+                      disabled={submittingReview}
+                      className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50"
+                    >
+                      {submittingReview ? "Posting..." : "Post Review"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* Back to Marketplace */}
-        <div className="mt-8">
+        <div className="pt-4 border-t border-border/20">
           <Link to="/marketplace">
-            <button className="px-6 py-2.5 bg-secondary border border-border/30 rounded-lg hover:bg-secondary/80 transition-all font-medium text-sm inline-flex items-center gap-2">
+            <button className="px-4 py-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-2">
               ← Back to Marketplace
             </button>
           </Link>
