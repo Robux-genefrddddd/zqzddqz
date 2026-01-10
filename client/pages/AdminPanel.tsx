@@ -133,6 +133,32 @@ export default function AdminPanel() {
     await loadData();
   };
 
+  const handleMaintenanceModeChange = async () => {
+    if (userProfile?.role !== "founder") {
+      toast.error("Only founders can change maintenance mode");
+      return;
+    }
+
+    setUpdatingMaintenance(true);
+    try {
+      const newStatus = !maintenanceStatus?.enabled;
+      await setMaintenanceMode(
+        newStatus,
+        maintenanceMessage,
+        userProfile.displayName,
+      );
+      toast.success(
+        `Maintenance mode ${newStatus ? "enabled" : "disabled"}`,
+      );
+      setShowMaintenanceModal(false);
+    } catch (error) {
+      console.error("Error updating maintenance mode:", error);
+      toast.error("Failed to update maintenance mode");
+    } finally {
+      setUpdatingMaintenance(false);
+    }
+  };
+
   // Filter users based on search
   const filteredUsers = users.filter(
     (u) =>
