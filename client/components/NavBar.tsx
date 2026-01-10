@@ -267,7 +267,10 @@ export function NavBar() {
                     transition={{ delay: 0.1, duration: 0.3 }}
                     className="px-6 py-6 border-b border-blue-500/10 bg-gradient-to-r from-blue-500/5 to-transparent"
                   >
-                    <h2 className="text-xl font-bold text-white mb-1">Menu</h2>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-2xl">🎮</span>
+                      <h2 className="text-xl font-bold text-white">Menu</h2>
+                    </div>
                     <p className="text-xs text-slate-400">
                       Quick access to features
                     </p>
