@@ -97,6 +97,62 @@ const App = () => (
               </Layout>
             }
           />
+          <Route
+            path="/upload"
+            element={
+              <Layout>
+                <Upload />
+              </Layout>
+            }
+          />
+          <Route
+            path="/collections"
+            element={
+              <Layout>
+                <Collections />
+              </Layout>
+            }
+          />
+          <Route
+            path="/blog"
+            element={
+              <Layout>
+                <Blog />
+              </Layout>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <Layout>
+                <Contact />
+              </Layout>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <Layout>
+                <Privacy />
+              </Layout>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <Layout>
+                <Terms />
+              </Layout>
+            }
+          />
+          <Route
+            path="/cookies"
+            element={
+              <Layout>
+                <Cookies />
+              </Layout>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route
             path="*"
