@@ -315,6 +315,64 @@ export default function Dashboard() {
                 </Link>
               </div>
             )}
+
+            {/* Scheduled Uploads */}
+            {scheduledUploads.length > 0 && (
+              <div className="border border-border/50 rounded-lg overflow-hidden">
+                <div className="px-4 py-3 border-b border-border/50 bg-card/50 flex items-center gap-2">
+                  <Clock size={16} className="text-muted-foreground" />
+                  <h3 className="text-sm font-semibold">Scheduled Uploads</h3>
+                </div>
+                <div className="divide-y divide-border/50">
+                  {scheduledUploads.map((upload) => (
+                    <div
+                      key={upload.id}
+                      className="px-4 py-3 flex items-center justify-between gap-4 hover:bg-card/30 transition-colors"
+                    >
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">
+                          {upload.files.length} file(s)
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {upload.scheduledFor.toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                            upload.status === "scheduled"
+                              ? "bg-blue-500/20 text-blue-400"
+                              : upload.status === "processing"
+                                ? "bg-yellow-500/20 text-yellow-400"
+                                : upload.status === "completed"
+                                  ? "bg-green-500/20 text-green-400"
+                                  : "bg-gray-500/20 text-gray-400"
+                          }`}
+                        >
+                          {upload.status === "scheduled"
+                            ? getTimeRemaining(upload.scheduledFor)
+                            : upload.status.charAt(0).toUpperCase() +
+                              upload.status.slice(1)}
+                        </span>
+                        {upload.status === "scheduled" && (
+                          <button
+                            onClick={() => handleCancelScheduledUpload(upload.id)}
+                            className="p-1 hover:bg-card rounded transition-colors"
+                          >
+                            <X size={14} className="text-destructive" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
