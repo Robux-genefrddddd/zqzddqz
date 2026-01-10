@@ -59,7 +59,6 @@ export async function getUserActiveWarnings(
   userId: string,
 ): Promise<Warning[]> {
   try {
-    // Only filter by userId in the query, then filter by isActive client-side
     const q = query(
       collection(db, WARNINGS_COLLECTION),
       where("userId", "==", userId),
