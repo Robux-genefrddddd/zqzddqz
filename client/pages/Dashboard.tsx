@@ -266,8 +266,8 @@ export default function Dashboard() {
                         </div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <button className="p-1.5 hover:bg-secondary rounded transition-colors">
-                              <MoreVertical size={14} />
+                            <button className="p-1 hover:bg-secondary rounded transition-colors">
+                              <MoreVertical size={12} />
                             </button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
@@ -275,7 +275,7 @@ export default function Dashboard() {
                               <Link to={`/asset/${asset.id}`}>View Asset</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem disabled>
-                              Edit Asset (Coming Soon)
+                              Edit (Coming Soon)
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
