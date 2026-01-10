@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Upload as UploadIcon, X, Plus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Upload as UploadIcon, X, Plus, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/contexts/AuthContext";
+import { createAsset } from "@/lib/assetService";
+import { toast } from "sonner";
 
 interface FilePreview {
   id: string;
