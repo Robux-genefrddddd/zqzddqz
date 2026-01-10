@@ -120,11 +120,13 @@ export function NavBar() {
           <div className="flex items-center gap-3 flex-1">
             <button
               onClick={toggleMenu}
-              className="p-2 hover:bg-secondary/50 rounded-lg transition-all duration-200 flex-shrink-0 group relative"
+              className="p-2 hover:bg-secondary/40 rounded-lg transition-all duration-200 flex-shrink-0 group"
             >
-              <span className="text-xl group-hover:scale-110 transition-transform duration-200">
-                {menuOpen ? "✕" : "☰"}
-              </span>
+              {menuOpen ? (
+                <X size={20} className="text-foreground group-hover:text-primary transition-colors" />
+              ) : (
+                <Menu size={20} className="text-foreground group-hover:text-primary transition-colors" />
+              )}
             </button>
             <Link to="/" className="flex items-center gap-2">
               <img
