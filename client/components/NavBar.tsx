@@ -467,10 +467,10 @@ export function NavBar() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.35 }}
-                            className="px-4 py-6 border-t border-blue-500/10"
+                            className="px-4 py-6 border-t border-border/20"
                           >
-                            <p className="text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-4 px-2">
-                              ⚡ Admin
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                              Admin
                             </p>
                             <motion.div
                               custom={7}
@@ -480,21 +480,11 @@ export function NavBar() {
                             >
                               <Link
                                 to="/admin"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-500/5 hover:from-amber-500/30 hover:to-amber-500/10 transition-all duration-200 font-semibold text-amber-400 border border-amber-500/20 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors duration-150 text-accent border border-accent/20 group"
                                 onClick={closeMenu}
                               >
-                                <span className="text-2xl group-hover:scale-125 transition-transform duration-200">
-                                  🎛️
-                                </span>
-                                <div className="flex-1">
-                                  <div className="text-sm font-bold">
-                                    Admin Panel
-                                  </div>
-                                  <div className="text-xs text-amber-300/60">
-                                    Control center
-                                  </div>
-                                </div>
-                                <span className="text-xs text-slate-600">→</span>
+                                <Shield size={18} className="text-accent" />
+                                <span className="text-sm font-semibold">Admin Panel</span>
                               </Link>
                             </motion.div>
                           </motion.div>
