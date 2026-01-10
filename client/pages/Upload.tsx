@@ -190,15 +190,15 @@ export default function Upload() {
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="flex justify-center">
-            <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center animate-fade-in">
-              <CheckCircle size={48} className="text-green-400" />
+            <div className="w-16 h-16 rounded-full bg-green-500/15 flex items-center justify-center animate-fade-in">
+              <CheckCircle size={32} className="text-green-500/60" />
             </div>
           </div>
-          <div className="space-y-3">
-            <h1 className="text-3xl font-bold text-foreground">
-              Upload Successful! ✓
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold text-foreground">
+              Upload Successful
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground/70">
               Your asset has been published and is now visible in the
               marketplace.
             </p>
