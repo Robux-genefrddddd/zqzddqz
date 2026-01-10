@@ -179,8 +179,8 @@ export default function Register() {
             {/* Sign Up Button */}
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 text-sm"
+              disabled={isLoading || !username || !email || !password || !confirmPassword}
+              className="w-full py-2.5 bg-primary text-primary-foreground font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 text-sm"
             >
               {isLoading ? "Creating account..." : "Create Account"}
               {!isLoading && <ArrowRight size={14} />}
