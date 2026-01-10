@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import { onAuthChange, DEFAULT_PROFILE_IMAGE, getUserProfile } from "@/lib/auth";
+import {
+  onAuthChange,
+  DEFAULT_PROFILE_IMAGE,
+  getUserProfile,
+} from "@/lib/auth";
 
 interface UserProfile {
   uid: string;

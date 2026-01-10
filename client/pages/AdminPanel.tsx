@@ -233,7 +233,10 @@ export default function AdminPanel() {
             <div className="space-y-3">
               {filteredUsers.length === 0 ? (
                 <div className="text-center py-12">
-                  <AlertCircle size={40} className="mx-auto text-muted-foreground mb-4" />
+                  <AlertCircle
+                    size={40}
+                    className="mx-auto text-muted-foreground mb-4"
+                  />
                   <p className="text-muted-foreground">No users found</p>
                 </div>
               ) : (
@@ -301,7 +304,10 @@ export default function AdminPanel() {
           <div className="space-y-3">
             {auditLogs.length === 0 ? (
               <div className="text-center py-12">
-                <Clock size={40} className="mx-auto text-muted-foreground mb-4" />
+                <Clock
+                  size={40}
+                  className="mx-auto text-muted-foreground mb-4"
+                />
                 <p className="text-muted-foreground">No audit logs yet</p>
               </div>
             ) : (
@@ -316,17 +322,24 @@ export default function AdminPanel() {
                         {log.action.replace(/_/g, " ")}
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        By <span className="font-medium">{log.performedByName}</span>
+                        By{" "}
+                        <span className="font-medium">
+                          {log.performedByName}
+                        </span>
                         {log.targetUserName && (
                           <>
                             {" "}
-                            → <span className="font-medium">{log.targetUserName}</span>
+                            →{" "}
+                            <span className="font-medium">
+                              {log.targetUserName}
+                            </span>
                           </>
                         )}
                       </p>
                       {log.reason && (
                         <p className="text-xs text-muted-foreground mt-2">
-                          <span className="font-medium">Reason:</span> {log.reason}
+                          <span className="font-medium">Reason:</span>{" "}
+                          {log.reason}
                         </p>
                       )}
                     </div>

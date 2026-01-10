@@ -23,9 +23,9 @@ import { logoutUser } from "@/lib/auth";
 import { WarningsSection } from "@/components/WarningsSection";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<"overview" | "assets" | "warnings">(
-    "overview",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "assets" | "warnings"
+  >("overview");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const { userProfile, isAuthenticated, user } = useAuth();
@@ -427,9 +427,7 @@ export default function Dashboard() {
                   </p>
                 </div>
               </div>
-              {user && (
-                <WarningsSection userId={user.uid} canDelete={false} />
-              )}
+              {user && <WarningsSection userId={user.uid} canDelete={false} />}
             </div>
           </div>
         )}

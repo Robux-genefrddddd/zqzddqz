@@ -42,9 +42,9 @@ export function UserDetailModal({
   );
   const [warnings, setWarnings] = useState<Warning[]>([]);
   const [loading, setLoading] = useState(false);
-  const [actionType, setActionType] = useState<"warning" | "ban" | "suspension">(
-    "warning",
-  );
+  const [actionType, setActionType] = useState<
+    "warning" | "ban" | "suspension"
+  >("warning");
   const [reason, setReason] = useState("");
   const [durationDays, setDurationDays] = useState("7");
 
@@ -67,7 +67,8 @@ export function UserDetailModal({
 
     setLoading(true);
     try {
-      const duration = actionType === "ban" ? undefined : parseInt(durationDays);
+      const duration =
+        actionType === "ban" ? undefined : parseInt(durationDays);
       await createWarning(
         user.uid,
         "admin-id", // This should come from current user
@@ -196,7 +197,9 @@ export function UserDetailModal({
               <div className="flex-1">
                 <div className="mb-4">
                   <h3 className="text-xl font-bold">{user.displayName}</h3>
-                  <p className="text-sm text-muted-foreground">@{user.username}</p>
+                  <p className="text-sm text-muted-foreground">
+                    @{user.username}
+                  </p>
                 </div>
 
                 <div className="space-y-2 text-sm">
@@ -210,7 +213,9 @@ export function UserDetailModal({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Rank:</span>
-                    <span className="capitalize">{user.memberRank || "N/A"}</span>
+                    <span className="capitalize">
+                      {user.memberRank || "N/A"}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Status:</span>
@@ -339,9 +344,7 @@ export function UserDetailModal({
 
                 {warnings.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-muted-foreground">
-                      No warnings or bans
-                    </p>
+                    <p className="text-muted-foreground">No warnings or bans</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -367,7 +370,9 @@ export function UserDetailModal({
                               <span className="text-xs text-muted-foreground flex items-center gap-1">
                                 <Clock size={12} />
                                 Expires{" "}
-                                {new Date(warning.expiresAt).toLocaleDateString()}
+                                {new Date(
+                                  warning.expiresAt,
+                                ).toLocaleDateString()}
                               </span>
                             )}
                           </div>
@@ -401,17 +406,19 @@ export function UserDetailModal({
 
         {/* Footer Actions */}
         <div className="border-t border-border/20 p-6 bg-secondary/10 space-y-3">
-          {!user.isBanned && user.role !== "founder" && user.role !== "admin" && (
-            <Button
-              onClick={handleBanUser}
-              disabled={loading}
-              variant="destructive"
-              className="w-full"
-            >
-              <Ban size={16} className="mr-2" />
-              Ban User
-            </Button>
-          )}
+          {!user.isBanned &&
+            user.role !== "founder" &&
+            user.role !== "admin" && (
+              <Button
+                onClick={handleBanUser}
+                disabled={loading}
+                variant="destructive"
+                className="w-full"
+              >
+                <Ban size={16} className="mr-2" />
+                Ban User
+              </Button>
+            )}
 
           {user.role !== "founder" && user.role !== "admin" && (
             <Button

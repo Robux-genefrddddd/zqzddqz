@@ -98,8 +98,8 @@ export function WarningNotificationModal() {
           {isBan && (
             <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
               <p className="text-sm text-red-300">
-                Your account has been permanently banned. You cannot access your account or
-                create new accounts.
+                Your account has been permanently banned. You cannot access your
+                account or create new accounts.
               </p>
             </div>
           )}

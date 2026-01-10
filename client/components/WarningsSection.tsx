@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { AlertCircle, Ban, Clock, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import {
-  getUserWarnings,
-  deleteWarning,
-  Warning,
-} from "@/lib/warningService";
+import { getUserWarnings, deleteWarning, Warning } from "@/lib/warningService";
 
 interface WarningsSectionProps {
   userId: string;

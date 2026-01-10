@@ -54,7 +54,9 @@ export async function getUserWarnings(userId: string): Promise<Warning[]> {
 }
 
 // Get active warnings for a user
-export async function getUserActiveWarnings(userId: string): Promise<Warning[]> {
+export async function getUserActiveWarnings(
+  userId: string,
+): Promise<Warning[]> {
   try {
     // Only filter by userId in the query, then filter by isActive client-side
     const q = query(
@@ -71,7 +73,9 @@ export async function getUserActiveWarnings(userId: string): Promise<Warning[]> 
         expiresAt: doc.data().expiresAt?.toDate?.() || undefined,
       }))
       .filter((w) => w.isActive)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) as Warning[];
+      .sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+      ) as Warning[];
 
     return warnings;
   } catch (error) {
@@ -171,7 +175,9 @@ export function subscribeToUserWarnings(
         expiresAt: doc.data().expiresAt?.toDate?.() || undefined,
       }))
       .filter((w) => w.isActive)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) as Warning[];
+      .sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+      ) as Warning[];
 
     callback(warnings);
   });
@@ -189,8 +195,7 @@ export async function isUserBanned(userId: string): Promise<boolean> {
     );
     const querySnapshot = await getDocs(q);
     const hasBan = querySnapshot.docs.some(
-      (doc) =>
-        doc.data().type === "ban" && doc.data().isActive === true,
+      (doc) => doc.data().type === "ban" && doc.data().isActive === true,
     );
     return hasBan;
   } catch (error) {
