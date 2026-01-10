@@ -290,57 +290,56 @@ export default function Dashboard() {
 
         {/* Assets Tab */}
         {activeTab === "assets" && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                You have {assets.length} published{" "}
-                {assets.length === 1 ? "asset" : "assets"}
+              <p className="text-xs text-muted-foreground">
+                {assets.length} published {assets.length === 1 ? "asset" : "assets"}
               </p>
               <Link to="/upload">
-                <Button size="sm">
-                  <UploadIcon size={14} />
-                  New Asset
+                <Button size="sm" className="text-xs">
+                  <UploadIcon size={12} />
+                  New
                 </Button>
               </Link>
             </div>
 
             {assets.length === 0 ? (
-              <div className="bg-secondary/30 border border-border rounded-lg p-8 text-center space-y-3">
-                <p className="text-sm text-muted-foreground">
+              <div className="bg-secondary/30 border border-border rounded-lg p-6 text-center space-y-2">
+                <p className="text-xs text-muted-foreground">
                   You haven't uploaded any assets yet.
                 </p>
                 <Link to="/upload">
-                  <Button size="sm">
-                    <UploadIcon size={14} className="mr-2" />
-                    Upload Your First Asset
+                  <Button size="sm" className="text-xs">
+                    <UploadIcon size={12} className="mr-1" />
+                    Upload Asset
                   </Button>
                 </Link>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-3">
                 {assets.map((asset) => (
                   <div
                     key={asset.id}
-                    className="bg-secondary/30 border border-border rounded-lg p-4 hover:border-border/80 transition-all"
+                    className="bg-secondary/30 border border-border rounded-lg p-3 hover:border-border/80 transition-all"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-3 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-2 flex-1">
                         <img
                           src={asset.imageUrl}
                           alt={asset.name}
-                          className="w-16 h-16 rounded object-cover flex-shrink-0"
+                          className="w-12 h-12 rounded object-cover flex-shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-semibold text-foreground">
+                          <h3 className="text-sm font-semibold text-foreground">
                             {asset.name}
                           </h3>
                           <p className="text-xs text-muted-foreground">
                             {asset.category}
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
+                          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                             {asset.description}
                           </p>
-                          <div className="flex gap-4 mt-2 text-xs">
+                          <div className="flex gap-3 mt-1 text-xs">
                             <div>
                               <p className="text-muted-foreground">Downloads</p>
                               <p className="font-semibold text-foreground">
@@ -356,7 +355,7 @@ export default function Dashboard() {
                             <div>
                               <p className="text-muted-foreground">Rating</p>
                               <p className="font-semibold text-foreground">
-                                ⭐ {asset.rating}
+                                {asset.rating}
                               </p>
                             </div>
                           </div>
