@@ -62,6 +62,10 @@ export default function Dashboard() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [updateFileAsset, setUpdateFileAsset] = useState<Asset | null>(null);
   const [updateFileDialogOpen, setUpdateFileDialogOpen] = useState(false);
+  const [scheduleUploadAsset, setScheduleUploadAsset] = useState<Asset | null>(null);
+  const [scheduleUploadDialogOpen, setScheduleUploadDialogOpen] =
+    useState(false);
+  const [scheduledUploads, setScheduledUploads] = useState<ScheduledUpload[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated) {
