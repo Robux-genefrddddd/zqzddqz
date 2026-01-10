@@ -6,11 +6,11 @@ export default function AssetDetail() {
 
   return (
     <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Image */}
-          <div className="md:col-span-2">
-            <div className="rounded-lg overflow-hidden bg-muted h-64">
+          <div className="md:col-span-2 flex justify-center">
+            <div className="rounded-lg overflow-hidden bg-muted w-full max-w-md h-48">
               <img
                 src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop"
                 alt="Asset"
