@@ -1,13 +1,57 @@
 import { Link } from "react-router-dom";
-import { Asset } from "@/lib/types";
+import { useState } from "react";
 import { Star, Download, Lock } from "lucide-react";
+import { downloadAssetFile, forceDownloadFile } from "@/lib/fileService";
+import { incrementAssetDownloads } from "@/lib/assetService";
+import { toast } from "sonner";
+import type { Asset } from "@/lib/assetService";
 
 interface AssetCardProps {
   asset: Asset;
 }
 
 export function AssetCard({ asset }: AssetCardProps) {
+  const [downloading, setDownloading] = useState(false);
   const isFree = asset.price === null || asset.price === 0;
+
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!asset.filePaths || asset.filePaths.length === 0) {
+      toast.error("No files available for download");
+      return;
+    }
+
+    setDownloading(true);
+
+    try {
+      // Download each file
+      for (const filePath of asset.filePaths) {
+        try {
+          const fileName = filePath.split("/").pop() || "asset";
+          const blob = await downloadAssetFile(filePath);
+          forceDownloadFile(blob, fileName);
+
+          // Small delay between downloads
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        } catch (err) {
+          console.error(`Error downloading file ${filePath}:`, err);
+          toast.error(`Failed to download file`);
+        }
+      }
+
+      // Increment download count
+      await incrementAssetDownloads(asset.id);
+
+      toast.success(`${asset.filePaths.length} file(s) download started`);
+    } catch (error) {
+      console.error("Error downloading asset:", error);
+      toast.error("Failed to download asset");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <Link to={`/asset/${asset.id}`}>
