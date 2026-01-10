@@ -42,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             profileImage: authUser.photoURL || DEFAULT_PROFILE_IMAGE,
             createdAt: new Date(),
             memberRank: "starter",
+            role: "member",
           });
         } catch (error) {
           console.error("Error fetching user profile:", error);
