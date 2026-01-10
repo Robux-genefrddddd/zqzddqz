@@ -137,13 +137,13 @@ export function Footer() {
               href="https://roblox.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center opacity-60 hover:opacity-100 transition-opacity"
+              className="inline-flex items-center opacity-70 hover:opacity-100 transition-opacity"
               aria-label="Roblox"
             >
               <img
-                src="https://www.freepnglogos.com/uploads/roblox/roblox-logo-roblox-symbol-meaning-history-and-evolution-3.jpg"
+                src="https://i.ibb.co/B531Dsh6/roblox-logo-roblox-symbol-meaning-history-and-evolution-3-removebg-preview.png"
                 alt="Roblox"
-                className="h-5 object-contain"
+                className="h-8 object-contain"
               />
             </a>
           </div>
