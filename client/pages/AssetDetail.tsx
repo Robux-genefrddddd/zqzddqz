@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import {
   Star,
   Download,
@@ -25,7 +30,11 @@ import {
   deleteReview,
   type Review,
 } from "@/lib/reviewService";
-import { downloadAssetFile, forceDownloadFile, type AssetFile } from "@/lib/fileService";
+import {
+  downloadAssetFile,
+  forceDownloadFile,
+  type AssetFile,
+} from "@/lib/fileService";
 import {
   isFavorited,
   addFavorite,

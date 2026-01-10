@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
-import { X, Download, FileText, Archive, Code, Image as ImageIcon, Music, Film } from "lucide-react";
-import { listAssetFiles, formatFileSize, type AssetFile } from "@/lib/fileService";
+import {
+  X,
+  Download,
+  FileText,
+  Archive,
+  Code,
+  Image as ImageIcon,
+  Music,
+  Film,
+} from "lucide-react";
+import {
+  listAssetFiles,
+  formatFileSize,
+  type AssetFile,
+} from "@/lib/fileService";
 
 interface FilePreviewModalProps {
   assetId: string;
@@ -105,7 +118,9 @@ export function FilePreviewModal({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div>
-            <h2 className="text-xl font-bold text-foreground">Download Files</h2>
+            <h2 className="text-xl font-bold text-foreground">
+              Download Files
+            </h2>
             <p className="text-sm text-muted-foreground mt-1">{assetName}</p>
           </div>
           <button
@@ -122,7 +137,9 @@ export function FilePreviewModal({
             <div className="flex items-center justify-center py-12">
               <div className="text-center space-y-3">
                 <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
-                <p className="text-sm text-muted-foreground">Loading files...</p>
+                <p className="text-sm text-muted-foreground">
+                  Loading files...
+                </p>
               </div>
             </div>
           ) : error ? (
@@ -136,11 +153,16 @@ export function FilePreviewModal({
                 <input
                   type="checkbox"
                   id="select-all"
-                  checked={selectedFiles.size === files.length && files.length > 0}
+                  checked={
+                    selectedFiles.size === files.length && files.length > 0
+                  }
                   onChange={handleSelectAll}
                   className="w-4 h-4 rounded cursor-pointer"
                 />
-                <label htmlFor="select-all" className="flex-1 cursor-pointer text-sm font-medium">
+                <label
+                  htmlFor="select-all"
+                  className="flex-1 cursor-pointer text-sm font-medium"
+                >
                   Select All ({selectedFiles.size}/{files.length})
                 </label>
               </div>
@@ -161,8 +183,12 @@ export function FilePreviewModal({
                     {getFileIcon(file.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
+                    <p className="text-sm font-medium text-foreground truncate">
+                      {file.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatFileSize(file.size)}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -174,7 +200,8 @@ export function FilePreviewModal({
         {!error && (
           <div className="flex items-center justify-between gap-3 p-6 border-t border-border bg-secondary/20">
             <p className="text-sm text-muted-foreground">
-              {selectedFilesList.length} file{selectedFilesList.length !== 1 ? "s" : ""} selected
+              {selectedFilesList.length} file
+              {selectedFilesList.length !== 1 ? "s" : ""} selected
             </p>
             <div className="flex gap-3">
               <button
@@ -189,7 +216,9 @@ export function FilePreviewModal({
                 className="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-all flex items-center gap-2"
               >
                 <Download size={16} />
-                {isDownloading ? "Downloading..." : `Download (${selectedFilesList.length})`}
+                {isDownloading
+                  ? "Downloading..."
+                  : `Download (${selectedFilesList.length})`}
               </button>
             </div>
           </div>

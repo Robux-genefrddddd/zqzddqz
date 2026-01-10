@@ -66,13 +66,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
 
           // Subscribe to real-time notifications
-          notificationsUnsub =
-            notificationService.subscribeToUserNotifications(
-              authUser.uid,
-              (notifs) => {
-                setNotifications(notifs);
-              },
-            );
+          notificationsUnsub = notificationService.subscribeToUserNotifications(
+            authUser.uid,
+            (notifs) => {
+              setNotifications(notifs);
+            },
+          );
 
           unreadUnsub = notificationService.subscribeToUnreadCount(
             authUser.uid,
