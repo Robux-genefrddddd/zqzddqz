@@ -527,7 +527,7 @@ export function NavBar() {
                               className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
                               onClick={closeMenu}
                             >
-                              <FileUp size={18} className="text-primary" />
+                              <Plus size={18} className="text-primary" />
                               <span className="text-sm font-semibold">Create Account</span>
                             </Link>
                           </motion.div>
