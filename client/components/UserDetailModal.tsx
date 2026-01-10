@@ -82,6 +82,7 @@ export function UserDetailModal({
       toast.success(`${actionType} created successfully`);
       setReason("");
       setDurationDays("7");
+      setActionType("warning");
 
       // Reload warnings
       const userWarnings = await getUserWarnings(user.uid);
