@@ -80,6 +80,19 @@ function RoleBadge({ role }: { role?: string }) {
   return null;
 }
 
+const menuItemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.3,
+      ease: "easeOut",
+    },
+  }),
+};
+
 export function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, userProfile, loading, unreadCount } = useAuth();
@@ -228,237 +241,370 @@ export function NavBar() {
         </div>
       </nav>
 
-      {menuOpen && createPortal(
-        <>
-          <div
-            className="fixed inset-0 bg-black/60 z-[9998]"
-            onClick={closeMenu}
-          />
-          <div className="fixed left-0 top-0 bottom-0 w-72 bg-slate-950 border-r border-slate-800 overflow-y-auto z-[9999] shadow-2xl">
-            <div className="flex flex-col h-full">
-              <div className="px-6 py-6 border-b border-border/50">
-                <h2 className="text-xl font-bold text-foreground mb-1">Navigation</h2>
-                <p className="text-xs text-muted-foreground">Access all features</p>
-              </div>
-
-              <div className="flex-1 overflow-y-auto">
-                <div className="px-4 py-6">
-                  <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
-                    Explore
-                  </p>
-                  <div className="space-y-2">
-                    <Link
-                      to="/marketplace"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                      onClick={closeMenu}
-                    >
-                      <span className="text-xl">📦</span>
-                      <div>
-                        <div className="text-sm font-semibold">Marketplace</div>
-                        <div className="text-xs text-muted-foreground">Browse all assets</div>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/support"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                      onClick={closeMenu}
-                    >
-                      <span className="text-xl">🆘</span>
-                      <div>
-                        <div className="text-sm font-semibold">Support</div>
-                        <div className="text-xs text-muted-foreground">Get help & resources</div>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/about"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                      onClick={closeMenu}
-                    >
-                      <span className="text-xl">ℹ️</span>
-                      <div>
-                        <div className="text-sm font-semibold">About Us</div>
-                        <div className="text-xs text-muted-foreground">Learn more</div>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-
-                {isAuthenticated && userProfile ? (
-                  <>
-                    <div className="px-4 py-6 border-t border-border/30">
-                      <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
-                        Your Account
-                      </p>
-                      <div className="bg-primary/10 rounded-xl p-4 mb-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={
-                              userProfile.profileImage ||
-                              "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
-                                userProfile.username
-                            }
-                            alt={userProfile.username}
-                            className="w-12 h-12 rounded-lg object-cover"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-foreground truncate">
-                              {userProfile.username}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {userProfile.email}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Link
-                          to="/dashboard"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                          onClick={closeMenu}
-                        >
-                          <span className="text-xl">📊</span>
-                          <div>
-                            <div className="text-sm font-semibold">Dashboard</div>
-                            <div className="text-xs text-muted-foreground">View your stats</div>
-                          </div>
-                        </Link>
-                        <Link
-                          to="/upload"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/30 hover:bg-primary/40 transition-all duration-200 font-semibold text-primary"
-                          onClick={closeMenu}
-                        >
-                          <span className="text-xl">⬆️</span>
-                          <div>
-                            <div className="text-sm font-bold">Upload Asset</div>
-                            <div className="text-xs text-primary/70">Create new</div>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div className="px-4 py-6 border-t border-border/30">
-                      <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
-                        Tools
-                      </p>
-                      <div className="space-y-2">
-                        <Link
-                          to="/groups"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                          onClick={closeMenu}
-                        >
-                          <span className="text-xl">👥</span>
-                          <div>
-                            <div className="text-sm font-semibold">Groups</div>
-                            <div className="text-xs text-muted-foreground">Manage groups</div>
-                          </div>
-                        </Link>
-                        <Link
-                          to="/messages"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                          onClick={closeMenu}
-                        >
-                          <span className="text-xl">💬</span>
-                          <div className="flex-1">
-                            <div className="text-sm font-semibold">Messages</div>
-                            <div className="text-xs text-muted-foreground">Your conversations</div>
-                          </div>
-                          {unreadCount > 0 && (
-                            <span className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                              {unreadCount > 9 ? "9+" : unreadCount}
-                            </span>
-                          )}
-                        </Link>
-                      </div>
-                    </div>
-
-                    {(userProfile.role === "founder" ||
-                      userProfile.role === "admin") && (
-                      <div className="px-4 py-6 border-t border-border/30">
-                        <p className="text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-3 px-2">
-                          Administration
-                        </p>
-                        <Link
-                          to="/admin"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 transition-all duration-200 font-semibold text-amber-400"
-                          onClick={closeMenu}
-                        >
-                          <span className="text-xl">⚙️</span>
-                          <div>
-                            <div className="text-sm font-bold">Admin Panel</div>
-                            <div className="text-xs text-amber-300/60">Manage site</div>
-                          </div>
-                        </Link>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="px-4 py-6 border-t border-border/30">
-                    <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-3 px-2">
-                      Account
-                    </p>
-                    <div className="space-y-2">
-                      <Link
-                        to="/login"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/20 transition-all duration-200 font-medium text-foreground"
-                        onClick={closeMenu}
-                      >
-                        <span className="text-xl">🔑</span>
-                        <div>
-                          <div className="text-sm font-semibold">Sign In</div>
-                          <div className="text-xs text-muted-foreground">Login to account</div>
-                        </div>
-                      </Link>
-                      <Link
-                        to="/register"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/30 hover:bg-primary/40 transition-all duration-200 font-semibold text-primary"
-                        onClick={closeMenu}
-                      >
-                        <span className="text-xl">✨</span>
-                        <div>
-                          <div className="text-sm font-bold">Create Account</div>
-                          <div className="text-xs text-primary/70">Join now</div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {isAuthenticated && userProfile && (
-                <div className="border-t border-border/30 px-4 py-4">
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      closeMenu();
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 font-medium text-red-400"
+      {createPortal(
+        <AnimatePresence>
+          {menuOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 bg-black/60 z-[9998]"
+                onClick={closeMenu}
+              />
+              <motion.div
+                initial={{ x: -300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -300, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border-r border-blue-500/20 overflow-y-auto z-[9999] shadow-2xl"
+              >
+                <div className="flex flex-col h-full">
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.3 }}
+                    className="px-6 py-6 border-b border-blue-500/10 bg-gradient-to-r from-blue-500/5 to-transparent"
                   >
-                    <span className="text-xl">🚪</span>
-                    <div className="text-left">
-                      <div className="text-sm font-semibold">Sign Out</div>
-                      <div className="text-xs text-red-300/60">Logout</div>
-                    </div>
-                  </button>
-                </div>
-              )}
+                    <h2 className="text-xl font-bold text-white mb-1">Menu</h2>
+                    <p className="text-xs text-slate-400">Quick access to features</p>
+                  </motion.div>
 
-              <div className="border-t border-border/30 px-4 py-4 flex justify-center">
-                <a
-                  href="https://roblox.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="opacity-60 hover:opacity-100 transition-opacity"
-                >
-                  <img
-                    src="https://i.ibb.co/B531Dsh6/roblox-logo-roblox-symbol-meaning-history-and-evolution-3-removebg-preview.png"
-                    alt="Roblox"
-                    className="h-5 object-contain"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </>,
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="px-4 py-6">
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.15 }}
+                        className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2"
+                      >
+                        Explore
+                      </motion.p>
+                      <div className="space-y-2">
+                        <motion.div
+                          custom={0}
+                          initial="hidden"
+                          animate="visible"
+                          variants={menuItemVariants}
+                        >
+                          <Link
+                            to="/marketplace"
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            onClick={closeMenu}
+                          >
+                            <span className="text-xl group-hover:scale-110 transition-transform">📦</span>
+                            <div>
+                              <div className="text-sm font-semibold">Marketplace</div>
+                              <div className="text-xs text-slate-500">Browse assets</div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                        <motion.div
+                          custom={1}
+                          initial="hidden"
+                          animate="visible"
+                          variants={menuItemVariants}
+                        >
+                          <Link
+                            to="/support"
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            onClick={closeMenu}
+                          >
+                            <span className="text-xl group-hover:scale-110 transition-transform">🆘</span>
+                            <div>
+                              <div className="text-sm font-semibold">Support</div>
+                              <div className="text-xs text-slate-500">Get help</div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                        <motion.div
+                          custom={2}
+                          initial="hidden"
+                          animate="visible"
+                          variants={menuItemVariants}
+                        >
+                          <Link
+                            to="/about"
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                            onClick={closeMenu}
+                          >
+                            <span className="text-xl group-hover:scale-110 transition-transform">ℹ️</span>
+                            <div>
+                              <div className="text-sm font-semibold">About</div>
+                              <div className="text-xs text-slate-500">Learn more</div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {isAuthenticated && userProfile ? (
+                      <>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.25 }}
+                          className="px-4 py-6 border-t border-blue-500/10"
+                        >
+                          <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                            Account
+                          </p>
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.3, duration: 0.3 }}
+                            className="bg-gradient-to-br from-blue-500/15 to-blue-500/5 rounded-xl p-4 mb-4 border border-blue-500/20"
+                          >
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={
+                                  userProfile.profileImage ||
+                                  "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+                                    userProfile.username
+                                }
+                                alt={userProfile.username}
+                                className="w-10 h-10 rounded-lg object-cover border border-blue-500/30"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-white truncate">
+                                  {userProfile.username}
+                                </p>
+                                <p className="text-xs text-slate-500 truncate">
+                                  {userProfile.email}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                          <div className="space-y-2">
+                            <motion.div
+                              custom={3}
+                              initial="hidden"
+                              animate="visible"
+                              variants={menuItemVariants}
+                            >
+                              <Link
+                                to="/dashboard"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                onClick={closeMenu}
+                              >
+                                <span className="text-xl group-hover:scale-110 transition-transform">📊</span>
+                                <div>
+                                  <div className="text-sm font-semibold">Dashboard</div>
+                                  <div className="text-xs text-slate-500">View stats</div>
+                                </div>
+                              </Link>
+                            </motion.div>
+                            <motion.div
+                              custom={4}
+                              initial="hidden"
+                              animate="visible"
+                              variants={menuItemVariants}
+                            >
+                              <Link
+                                to="/upload"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/30 to-blue-500/10 hover:from-blue-500/40 hover:to-blue-500/20 transition-all duration-200 font-semibold text-blue-300 group border border-blue-500/30"
+                                onClick={closeMenu}
+                              >
+                                <span className="text-xl group-hover:scale-110 transition-transform">⬆️</span>
+                                <div>
+                                  <div className="text-sm font-bold">Upload Asset</div>
+                                  <div className="text-xs text-blue-400/70">Create new</div>
+                                </div>
+                              </Link>
+                            </motion.div>
+                          </div>
+                        </motion.div>
+
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3 }}
+                          className="px-4 py-6 border-t border-blue-500/10"
+                        >
+                          <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                            Tools
+                          </p>
+                          <div className="space-y-2">
+                            <motion.div
+                              custom={5}
+                              initial="hidden"
+                              animate="visible"
+                              variants={menuItemVariants}
+                            >
+                              <Link
+                                to="/groups"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                onClick={closeMenu}
+                              >
+                                <span className="text-xl group-hover:scale-110 transition-transform">👥</span>
+                                <div>
+                                  <div className="text-sm font-semibold">Groups</div>
+                                  <div className="text-xs text-slate-500">Manage groups</div>
+                                </div>
+                              </Link>
+                            </motion.div>
+                            <motion.div
+                              custom={6}
+                              initial="hidden"
+                              animate="visible"
+                              variants={menuItemVariants}
+                            >
+                              <Link
+                                to="/messages"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                onClick={closeMenu}
+                              >
+                                <span className="text-xl group-hover:scale-110 transition-transform">💬</span>
+                                <div className="flex-1">
+                                  <div className="text-sm font-semibold">Messages</div>
+                                  <div className="text-xs text-slate-500">Conversations</div>
+                                </div>
+                                {unreadCount > 0 && (
+                                  <motion.span
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center"
+                                  >
+                                    {unreadCount > 9 ? "9+" : unreadCount}
+                                  </motion.span>
+                                )}
+                              </Link>
+                            </motion.div>
+                          </div>
+                        </motion.div>
+
+                        {(userProfile.role === "founder" ||
+                          userProfile.role === "admin") && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.35 }}
+                            className="px-4 py-6 border-t border-blue-500/10"
+                          >
+                            <p className="text-xs font-semibold text-amber-500/70 uppercase tracking-wider mb-4 px-2">
+                              Admin
+                            </p>
+                            <motion.div
+                              custom={7}
+                              initial="hidden"
+                              animate="visible"
+                              variants={menuItemVariants}
+                            >
+                              <Link
+                                to="/admin"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-500/5 hover:from-amber-500/30 hover:to-amber-500/10 transition-all duration-200 font-semibold text-amber-400 border border-amber-500/20 group"
+                                onClick={closeMenu}
+                              >
+                                <span className="text-xl group-hover:scale-110 transition-transform">⚙️</span>
+                                <div>
+                                  <div className="text-sm font-bold">Admin Panel</div>
+                                  <div className="text-xs text-amber-300/60">Manage</div>
+                                </div>
+                              </Link>
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.25 }}
+                        className="px-4 py-6 border-t border-blue-500/10"
+                      >
+                        <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
+                          Account
+                        </p>
+                        <div className="space-y-2">
+                          <motion.div
+                            custom={3}
+                            initial="hidden"
+                            animate="visible"
+                            variants={menuItemVariants}
+                          >
+                            <Link
+                              to="/login"
+                              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                              onClick={closeMenu}
+                            >
+                              <span className="text-xl group-hover:scale-110 transition-transform">🔑</span>
+                              <div>
+                                <div className="text-sm font-semibold">Sign In</div>
+                                <div className="text-xs text-slate-500">Login</div>
+                              </div>
+                            </Link>
+                          </motion.div>
+                          <motion.div
+                            custom={4}
+                            initial="hidden"
+                            animate="visible"
+                            variants={menuItemVariants}
+                          >
+                            <Link
+                              to="/register"
+                              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/30 to-blue-500/10 hover:from-blue-500/40 hover:to-blue-500/20 transition-all duration-200 font-semibold text-blue-300 group border border-blue-500/30"
+                              onClick={closeMenu}
+                            >
+                              <span className="text-xl group-hover:scale-110 transition-transform">✨</span>
+                              <div>
+                                <div className="text-sm font-bold">Create Account</div>
+                                <div className="text-xs text-blue-400/70">Join now</div>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {isAuthenticated && userProfile && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="border-t border-blue-500/10 px-4 py-4"
+                    >
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          closeMenu();
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 font-medium text-red-400 group"
+                      >
+                        <span className="text-xl group-hover:scale-110 transition-transform">🚪</span>
+                        <div className="text-left">
+                          <div className="text-sm font-semibold">Sign Out</div>
+                          <div className="text-xs text-red-300/60">Logout</div>
+                        </div>
+                      </button>
+                    </motion.div>
+                  )}
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.45 }}
+                    className="border-t border-blue-500/10 px-4 py-4 flex justify-center"
+                  >
+                    <a
+                      href="https://roblox.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="opacity-60 hover:opacity-100 transition-opacity"
+                    >
+                      <img
+                        src="https://i.ibb.co/B531Dsh6/roblox-logo-roblox-symbol-meaning-history-and-evolution-3-removebg-preview.png"
+                        alt="Roblox"
+                        className="h-5 object-contain"
+                      />
+                    </a>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
         document.body
       )}
     </>
