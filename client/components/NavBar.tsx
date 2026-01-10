@@ -229,7 +229,14 @@ export function NavBar() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="border-t border-border/20 bg-secondary/20 fixed left-0 top-14 bottom-0 w-64 overflow-y-auto z-40 shadow-lg">
+          <>
+            {/* Overlay */}
+            <div
+              className="fixed inset-0 top-14 bg-black/30 z-30"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            {/* Menu */}
+            <div className="border-t border-border/20 bg-background fixed left-0 top-14 bottom-0 w-64 overflow-y-auto z-40 shadow-lg">
             {/* Top - Logo Section */}
             <div className="px-4 py-3 border-b border-border/20">
               <Link to="/" className="flex items-center gap-2">
@@ -373,6 +380,7 @@ export function NavBar() {
               </a>
             </div>
           </div>
+          </>
         )}
       </div>
     </nav>
