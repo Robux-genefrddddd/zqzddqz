@@ -410,13 +410,23 @@ export default function Dashboard() {
                                     View
                                   </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem disabled>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setEditingAsset(asset);
+                                    setEditDialogOpen(true);
+                                  }}
+                                >
                                   <Edit3 size={14} className="mr-2" />
-                                  Edit (Coming Soon)
+                                  Edit Details
                                 </DropdownMenuItem>
-                                <DropdownMenuItem disabled>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setUpdateFileAsset(asset);
+                                    setUpdateFileDialogOpen(true);
+                                  }}
+                                >
                                   <Copy size={14} className="mr-2" />
-                                  Update File (Coming Soon)
+                                  Update Files
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
