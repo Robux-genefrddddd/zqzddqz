@@ -678,9 +678,9 @@ export default function AssetDetail() {
         )}
 
         {/* Back to Marketplace */}
-        <div className="mt-8">
+        <div className="pt-4 border-t border-border/20">
           <Link to="/marketplace">
-            <button className="px-6 py-2.5 bg-secondary border border-border/30 rounded-lg hover:bg-secondary/80 transition-all font-medium text-sm inline-flex items-center gap-2">
+            <button className="px-4 py-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-2">
               ← Back to Marketplace
             </button>
           </Link>
