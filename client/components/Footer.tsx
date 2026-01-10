@@ -28,11 +28,11 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-foreground text-xs uppercase tracking-widest">
               Studios
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2.5">
               <li>
                 <a
                   href="#"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Create
                 </a>
@@ -40,7 +40,7 @@ export function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Publish
                 </a>
@@ -50,14 +50,14 @@ export function Footer() {
 
           {/* Product */}
           <div>
-            <h4 className="font-semibold mb-3 text-foreground text-xs uppercase tracking-wide">
+            <h4 className="font-semibold mb-4 text-foreground text-xs uppercase tracking-widest">
               Product
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   to="/marketplace"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Marketplace
                 </Link>
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/upload"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Upload
                 </Link>
@@ -73,7 +73,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/collections"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Collections
                 </Link>
@@ -83,14 +83,14 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold mb-3 text-foreground text-xs uppercase tracking-wide">
+            <h4 className="font-semibold mb-4 text-foreground text-xs uppercase tracking-widest">
               Company
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   to="/about"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   About
                 </Link>
@@ -98,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/blog"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Blog
                 </Link>
@@ -106,7 +106,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-xs text-muted-foreground/80 hover:text-foreground transition-colors"
                 >
                   Contact
                 </Link>
@@ -116,7 +116,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="font-semibold mb-3 text-foreground text-xs uppercase tracking-wide">
+            <h4 className="font-semibold mb-4 text-foreground text-xs uppercase tracking-widest">
               Legal
             </h4>
             <ul className="space-y-1.5">
