@@ -54,7 +54,7 @@ export default function GroupDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="bg-background flex flex-col">
       {/* Header - Compact */}
       <div className="border-b border-border/30 bg-card/50">
         <div className="max-w-5xl mx-auto px-4 py-3">
