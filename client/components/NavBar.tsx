@@ -227,7 +227,7 @@ export function NavBar() {
         <>
           {/* Overlay */}
           <div
-            className="fixed inset-0 top-14 bg-black/60 z-40"
+            className="fixed inset-0 top-14 bg-black/60 z-[9998]"
             onClick={() => setMenuOpen(false)}
           />
           {/* Menu Panel */}
