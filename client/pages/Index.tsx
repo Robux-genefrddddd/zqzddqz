@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { AssetCard } from "@/components/AssetCard";
-import { Sparkles, Zap, Shield, TrendingUp } from "lucide-react";
+import { Search } from "lucide-react";
 import { Asset } from "@/lib/types";
 
 // Mock featured assets for the homepage
