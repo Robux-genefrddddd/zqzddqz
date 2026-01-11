@@ -25,11 +25,11 @@ export function UploadStep1({
   onBannerChange,
   onFilesAdd,
   onFileRemove,
+  isValidatingFiles = false,
 }: UploadStep1Props) {
   const [dragActive, setDragActive] = useState(false);
   const [bannerDragActive, setBannerDragActive] = useState(false);
   const [bannerValidating, setBannerValidating] = useState(false);
-  const [filesValidating, setFilesValidating] = useState(false);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
