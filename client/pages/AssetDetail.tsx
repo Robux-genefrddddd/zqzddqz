@@ -10,12 +10,12 @@ import {
   Download,
   Heart,
   ArrowRight,
-  Loader,
   Trash2,
   FileDown,
   Copy,
   MoreVertical,
 } from "lucide-react";
+import { Loader } from "@/components/ui/loader";
 import {
   DropdownMenu,
   DropdownMenuContent,
