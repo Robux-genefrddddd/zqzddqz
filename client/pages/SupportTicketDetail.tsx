@@ -180,9 +180,7 @@ export default function SupportTicketDetail() {
     }
   };
 
-  const getRoleBadge = (senderRole: string, senderId: string) => {
-    const profile = userProfiles[senderId];
-
+  const getRoleBadge = (senderRole: string, senderMemberRank?: string) => {
     // Priority 1: Check for staff roles
     switch (senderRole) {
       case "support":
@@ -205,13 +203,13 @@ export default function SupportTicketDetail() {
         };
       default:
         // Priority 2: Show member rank if not a staff member
-        if (profile?.memberRank && senderRole === "user") {
-          const rankColor = getMemberRankColor(profile.memberRank);
-          const rankLabel = getMemberRankLabel(profile.memberRank);
+        if (senderMemberRank && senderRole === "user") {
+          const rankColor = getMemberRankColor(senderMemberRank);
+          const rankLabel = getMemberRankLabel(senderMemberRank);
           return {
             icon: "⭐",
             label: rankLabel,
-            color: `${rankColor} bg-opacity-20 px-2 py-0.5`,
+            color: rankColor,
           };
         }
         return {
