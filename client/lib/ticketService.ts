@@ -40,6 +40,7 @@ export interface TicketMessage {
   isRead?: boolean;
   senderProfileImage?: string;
   senderMemberRank?: "starter" | "creator" | "pro" | "studio";
+  userRole?: "member" | "partner" | "admin" | "founder" | "support";
 }
 
 export interface Ticket {
