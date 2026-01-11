@@ -215,7 +215,9 @@ export default function AdminPanel() {
 
   if (
     !userProfile ||
-    (userProfile.role !== "founder" && userProfile.role !== "admin")
+    (userProfile.role !== "founder" &&
+      userProfile.role !== "admin" &&
+      userProfile.role !== "support")
   ) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
