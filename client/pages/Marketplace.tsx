@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader } from "@/components/ui/loader";
 
 const CATEGORIES = [
   { name: "3D Models", icon: Box },
