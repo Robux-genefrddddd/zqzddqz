@@ -115,6 +115,8 @@ export default function SupportTicketDetail() {
         userProfile.displayName,
         "user",
         message,
+        userProfile.profileImage || DEFAULT_PROFILE_IMAGE,
+        userProfile.memberRank,
       );
 
       setMessage("");
