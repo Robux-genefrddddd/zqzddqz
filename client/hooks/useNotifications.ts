@@ -111,3 +111,32 @@ export function useDeleteNotification() {
 
   return { deleteNotification, loading, error };
 }
+
+/**
+ * Hook to get unread ticket count with real-time updates
+ */
+export function useUnreadTicketCount(userId: string | undefined) {
+  const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!userId) {
+      setCount(0);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const unsubscribe = ticketService.subscribeToUnreadTicketCount(
+      userId,
+      (count) => {
+        setCount(count);
+        setLoading(false);
+      },
+    );
+
+    return unsubscribe;
+  }, [userId]);
+
+  return { count, loading };
+}
