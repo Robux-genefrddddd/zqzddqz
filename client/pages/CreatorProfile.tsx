@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Download, Star, Loader, ArrowLeft } from "lucide-react";
+import { Download, Star, ArrowLeft } from "lucide-react";
 import { getUserProfile, type UserProfile } from "@/lib/auth";
 import { getUserAssets, type Asset } from "@/lib/assetService";
 import { AssetCard } from "@/components/AssetCard";
+import { Loader } from "@/components/ui/loader";
 
 export default function CreatorProfile() {
   const { id } = useParams<{ id: string }>();
