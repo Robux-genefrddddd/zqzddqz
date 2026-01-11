@@ -37,7 +37,7 @@ import {
   getAllBroadcastMessages,
   deleteBroadcastMessage,
 } from "@/lib/broadcastService";
-import { getAllTickets, Ticket, getTicket } from "@/lib/ticketService";
+import { getAllTickets, Ticket, getTicket, markTicketMessagesAsRead } from "@/lib/ticketService";
 import { Loader } from "@/components/ui/loader";
 
 interface User {
