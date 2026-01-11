@@ -1,14 +1,10 @@
 /**
  * Image Validation Service
- * 
- * Validates images for NSFW content BEFORE uploading to storage.
- * All image uploads must pass this validation first.
- * 
- * This service:
- * - Calls /api/nsfw-check endpoint
- * - Handles validation errors gracefully
- * - Provides user-friendly error messages
- * - Logs validation results
+ *
+ * Validates images before uploading to storage.
+ * - Checks file type and size
+ * - Validates image format
+ * - Handles errors gracefully
  */
 
 export interface ImageValidationResult {
@@ -20,8 +16,8 @@ export interface ImageValidationResult {
 }
 
 /**
- * Validate image for NSFW content
- * 
+ * Validate image file before upload
+ *
  * @param file - Image file to validate
  * @returns Validation result
  */
@@ -29,16 +25,16 @@ export async function validateImage(
   file: File,
 ): Promise<ImageValidationResult> {
   try {
-    // Validate file is an image
+    // Client-side: Validate file is an image
     if (!file.type.startsWith('image/')) {
       return {
         approved: false,
-        error: 'File must be an image',
+        error: 'File must be an image (PNG, JPG, WebP, GIF)',
         code: 'INVALID_FILE_TYPE',
       };
     }
 
-    // Validate file size (50MB limit)
+    // Client-side: Validate file size (50MB limit)
     const MAX_FILE_SIZE_MB = 50;
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
       return {
@@ -48,13 +44,13 @@ export async function validateImage(
       };
     }
 
-    // Create form data
+    // Prepare file for server validation
     const formData = new FormData();
     formData.append('file', file);
 
-    console.log('[ImageValidation] Validating image:', file.name);
+    console.log('[ImageValidation] Sending image to server:', file.name);
 
-    // Send to NSFW check endpoint
+    // Send to server validation endpoint
     const response = await fetch('/api/nsfw-check', {
       method: 'POST',
       body: formData,
@@ -63,9 +59,8 @@ export async function validateImage(
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
 
-      console.warn('[ImageValidation] Image validation failed:', {
+      console.warn('[ImageValidation] Server validation failed:', {
         status: response.status,
-        code: errorData.code,
         error: errorData.error,
       });
 
@@ -73,33 +68,24 @@ export async function validateImage(
       if (response.status === 429) {
         return {
           approved: false,
-          error: 'Too many validation requests. Please try again in a moment.',
+          error: 'Too many validation requests. Please wait a moment and try again.',
           code: 'RATE_LIMIT_EXCEEDED',
         };
       }
 
-      // Handle NSFW content detected
-      if (response.status === 403) {
-        console.warn('[ImageValidation] NSFW content detected:', {
-          fileName: file.name,
-          category: errorData.details?.category,
-          confidence: errorData.details?.confidence,
-        });
-
+      // Handle invalid format on server
+      if (response.status === 400) {
         return {
           approved: false,
-          error: 'Image contains prohibited content and cannot be uploaded',
-          code: 'NSFW_CONTENT_DETECTED',
-          category: errorData.details?.category || 'nsfw',
+          error: 'Image file is invalid or corrupted. Please try a different image.',
+          code: 'INVALID_IMAGE',
         };
       }
 
-      // Handle other errors
+      // Handle other server errors
       return {
         approved: false,
-        error:
-          errorData.error ||
-          'Image validation failed. Please try again or contact support.',
+        error: errorData.error || 'Image validation failed. Please try again.',
         code: errorData.code || 'VALIDATION_ERROR',
       };
     }
@@ -107,25 +93,34 @@ export async function validateImage(
     // Parse successful response
     const result = await response.json();
 
-    console.log('[ImageValidation] Image approved:', {
-      fileName: file.name,
-      category: result.category,
-      confidence: result.confidence,
-    });
+    if (!result.approved) {
+      console.warn('[ImageValidation] Image rejected:', {
+        fileName: file.name,
+        reason: result.category,
+      });
+
+      return {
+        approved: false,
+        error: 'This image cannot be uploaded. Please select a different image.',
+        code: 'CONTENT_REJECTED',
+      };
+    }
+
+    console.log('[ImageValidation] Image approved:', file.name);
 
     return {
       approved: true,
-      category: result.category,
+      category: result.category || 'safe',
       confidence: result.confidence,
     };
   } catch (error) {
     console.error('[ImageValidation] Network error:', error);
 
-    // FAIL-SAFE: Reject on network errors
+    // Network error: Still allow retry
     return {
       approved: false,
       error:
-        'Network error during image validation. Please check your connection and try again.',
+        'Network error. Please check your connection and try again.',
       code: 'NETWORK_ERROR',
     };
   }
