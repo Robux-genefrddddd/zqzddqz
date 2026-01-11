@@ -232,40 +232,64 @@ export default function SupportTicketDetail() {
           </div>
 
           {/* Messages */}
-          <div className="bg-secondary/30 border border-border rounded-lg p-4 space-y-4 h-96 overflow-y-auto flex flex-col">
-            {ticket.messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex gap-3 ${
-                  msg.senderId === user?.uid ? "justify-end" : "justify-start"
-                }`}
-              >
+          <div
+            ref={messagesContainerRef}
+            onScroll={handleScroll}
+            className="bg-secondary/30 border border-border rounded-lg p-4 space-y-4 h-96 overflow-y-auto flex flex-col"
+          >
+            {ticket.messages.map((msg) => {
+              const roleBadge = getRoleBadge(msg.senderRole);
+              const isCurrentUser = msg.senderId === user?.uid;
+
+              return (
                 <div
-                  className={`max-w-xs space-y-1 ${
-                    msg.senderId === user?.uid ? "text-right" : ""
+                  key={msg.id}
+                  className={`flex gap-3 ${
+                    isCurrentUser ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <p className="text-xs text-muted-foreground">
-                    {msg.senderName}
-                    {msg.senderRole === "support" && (
-                      <span className="ml-1 text-primary">🛠️ Support</span>
-                    )}
-                  </p>
                   <div
-                    className={`px-4 py-2 rounded-lg ${
-                      msg.senderId === user?.uid
-                        ? "bg-primary text-primary-foreground rounded-br-none"
-                        : "bg-secondary/50 border border-border rounded-bl-none"
+                    className={`max-w-xs space-y-1 ${
+                      isCurrentUser ? "text-right" : ""
                     }`}
                   >
-                    <p className="text-sm break-words">{msg.message}</p>
+                    <div className="flex items-center gap-2">
+                      {!isCurrentUser && (
+                        <span className="text-xs font-medium text-foreground">
+                          {msg.senderName}
+                        </span>
+                      )}
+                      {msg.senderRole !== "user" && (
+                        <span
+                          className={`px-2 py-0.5 rounded text-xs font-medium ${roleBadge.color}`}
+                        >
+                          {roleBadge.icon} {roleBadge.label}
+                        </span>
+                      )}
+                      {isCurrentUser && (
+                        <span className="text-xs font-medium text-foreground">
+                          {msg.senderName}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      className={`px-4 py-2 rounded-lg ${
+                        isCurrentUser
+                          ? "bg-primary text-primary-foreground rounded-br-none"
+                          : msg.senderRole !== "user"
+                            ? "bg-blue-500/15 border border-blue-500/30 rounded-bl-none"
+                            : "bg-secondary/50 border border-border rounded-bl-none"
+                      }`}
+                    >
+                      <p className="text-sm break-words">{msg.message}</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {msg.timestamp.toLocaleString()}
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    {msg.timestamp.toLocaleString()}
-                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div ref={messagesEndRef} />
           </div>
 
