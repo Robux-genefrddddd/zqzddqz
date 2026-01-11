@@ -156,58 +156,21 @@ export default function SupportTicketDetail() {
     }
   };
 
-  const getMemberRankBadgeColors = (rank: string): string => {
-    switch (rank) {
-      case "starter":
-        return "bg-gray-500/20 text-gray-400";
-      case "creator":
-        return "bg-blue-500/20 text-blue-400";
-      case "pro":
-        return "bg-purple-500/20 text-purple-400";
-      case "studio":
-        return "bg-yellow-500/20 text-yellow-400";
-      default:
-        return "bg-gray-500/20 text-gray-400";
-    }
-  };
-
-  const getRoleBadge = (senderRole: string, senderMemberRank?: string) => {
-    // Priority 1: Check for staff roles
+  const getRoleLabel = (senderRole: string, senderMemberRank?: string): string => {
+    // Priority 1: Staff roles
     switch (senderRole) {
       case "support":
-        return {
-          icon: "🛠️",
-          label: "Support",
-          color: "bg-blue-500/20 text-blue-400",
-        };
+        return "Support";
       case "admin":
-        return {
-          icon: "👨‍💼",
-          label: "Admin",
-          color: "bg-purple-500/20 text-purple-400",
-        };
+        return "Admin";
       case "founder":
-        return {
-          icon: "👑",
-          label: "Founder",
-          color: "bg-yellow-500/20 text-yellow-400",
-        };
+        return "Founder";
       default:
-        // Priority 2: Show member rank if not a staff member
-        if (senderMemberRank && senderRole === "user") {
-          const rankLabel = getMemberRankLabel(senderMemberRank);
-          const rankColors = getMemberRankBadgeColors(senderMemberRank);
-          return {
-            icon: "⭐",
-            label: rankLabel,
-            color: rankColors,
-          };
+        // Priority 2: Member rank
+        if (senderMemberRank) {
+          return getMemberRankLabel(senderMemberRank);
         }
-        return {
-          icon: "👤",
-          label: "User",
-          color: "bg-gray-500/20 text-gray-400",
-        };
+        return "User";
     }
   };
 
