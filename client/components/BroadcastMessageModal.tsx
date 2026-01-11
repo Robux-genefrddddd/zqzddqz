@@ -64,6 +64,7 @@ export function BroadcastMessageModal({
       setMessage("");
       setSelectedUsers([]);
       setRecipientType("all");
+      onSuccess?.();
       onClose();
     } catch (error) {
       console.error("Error sending message:", error);
