@@ -185,7 +185,7 @@ export async function addMessageToTicket(
   ticketId: string,
   senderId: string,
   senderName: string,
-  senderRole: "user" | "support",
+  senderRole: "user" | "support" | "admin" | "founder",
   message: string,
 ): Promise<void> {
   try {
@@ -193,7 +193,8 @@ export async function addMessageToTicket(
     const ticketDoc = await getDoc(ticketRef);
 
     if (ticketDoc.exists()) {
-      const currentMessages = ticketDoc.data().messages || [];
+      const ticketData = ticketDoc.data();
+      const currentMessages = ticketData.messages || [];
       const newMessage: TicketMessage = {
         id: Math.random().toString(36),
         senderId,
@@ -201,12 +202,32 @@ export async function addMessageToTicket(
         senderRole,
         message,
         timestamp: new Date(),
+        isRead: false,
       };
 
       await updateDoc(ticketRef, {
         messages: [...currentMessages, newMessage],
         updatedAt: Timestamp.now(),
       });
+
+      // Create notification for support responses
+      if (senderRole !== "user" && ticketData.userId) {
+        try {
+          const { createNotification } = await import("./notificationService");
+          await createNotification(
+            ticketData.userId,
+            "ticket_response",
+            `Response to: ${ticketData.subject}`,
+            `${senderName} replied to your support ticket`,
+            {
+              ticketId,
+              ticketSubject: ticketData.subject,
+            },
+          );
+        } catch (notifError) {
+          console.error("Error creating notification:", notifError);
+        }
+      }
     }
   } catch (error) {
     console.error("Error adding message to ticket:", error);
