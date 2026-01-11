@@ -156,24 +156,6 @@ export default function SupportTicketDetail() {
     }
   };
 
-  const getRoleLabel = (senderRole: string, senderMemberRank?: string): string => {
-    // Priority 1: Staff roles
-    switch (senderRole) {
-      case "support":
-        return "Support";
-      case "admin":
-        return "Admin";
-      case "founder":
-        return "Founder";
-      default:
-        // Priority 2: Member rank
-        if (senderMemberRank) {
-          return getMemberRankLabel(senderMemberRank);
-        }
-        return "User";
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
