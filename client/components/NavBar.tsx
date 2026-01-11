@@ -289,7 +289,12 @@ export function NavBar() {
                               size={16}
                               className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                             />
-                            <span className="font-medium">Support</span>
+                            <span className="font-medium flex-1">Support</span>
+                            {unreadTickets > 0 && (
+                              <span className="bg-destructive text-destructive-foreground text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0">
+                                {unreadTickets > 9 ? "9+" : unreadTickets}
+                              </span>
+                            )}
                           </Link>
                         </motion.div>
                         <motion.div
