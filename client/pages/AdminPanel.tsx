@@ -630,7 +630,7 @@ export default function AdminPanel() {
                   .map((ticket) => (
                     <div
                       key={ticket.id}
-                      onClick={() => setSelectedTicket(ticket)}
+                      onClick={() => handleSelectTicket(ticket)}
                       className="p-3 bg-card border border-border/30 rounded-lg hover:border-border/60 hover:bg-card/80 transition-all cursor-pointer group"
                     >
                       <div className="flex items-start justify-between gap-3">
