@@ -50,14 +50,7 @@ export default function CreatorProfile() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader size={32} className="animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground">Loading creator profile...</p>
-        </div>
-      </div>
-    );
+    return <Loader text="Loading creator profile..." />;
   }
 
   if (error || !creator) {
