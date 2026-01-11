@@ -251,7 +251,7 @@ export default function SupportTicketDetail() {
                           {msg.senderName}
                         </span>
                       )}
-                      <RoleBadge role={msg.senderRole} size="sm" />
+                      <RoleBadge role={msg.userRole || msg.senderRole} size="sm" />
                       {isCurrentUser && (
                         <span className="text-xs font-medium text-foreground">
                           {msg.senderName}
