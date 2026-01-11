@@ -236,7 +236,6 @@ export default function SupportTicketDetail() {
             className="bg-secondary/30 border border-border rounded-lg p-4 space-y-4 h-96 overflow-y-auto flex flex-col"
           >
             {ticket.messages.map((msg) => {
-              const roleBadge = getRoleBadge(msg.senderRole, msg.senderMemberRank);
               const isCurrentUser = msg.senderId === user?.uid;
               const profileImage =
                 msg.senderProfileImage || DEFAULT_PROFILE_IMAGE;
@@ -263,17 +262,13 @@ export default function SupportTicketDetail() {
                       isCurrentUser ? "text-right" : ""
                     }`}
                   >
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex items-center gap-1 flex-wrap">
                       {!isCurrentUser && (
                         <span className="text-xs font-medium text-foreground">
                           {msg.senderName}
                         </span>
                       )}
-                      <span
-                        className={`px-2 py-0.5 rounded text-xs font-medium ${roleBadge.color}`}
-                      >
-                        {roleBadge.icon} {roleBadge.label}
-                      </span>
+                      <RoleBadge role={msg.senderRole} size="sm" />
                       {isCurrentUser && (
                         <span className="text-xs font-medium text-foreground">
                           {msg.senderName}
