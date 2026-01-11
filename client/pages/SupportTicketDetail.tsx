@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { getTicket, addMessageToTicket, Ticket } from "@/lib/ticketService";
-import { getMemberRankColor, getMemberRankLabel, DEFAULT_PROFILE_IMAGE } from "@/lib/auth";
+import { getMemberRankLabel, DEFAULT_PROFILE_IMAGE } from "@/lib/auth";
+import { RoleBadge } from "@/components/RoleBadge";
 import { toast } from "sonner";
 import { Loader } from "@/components/ui/loader";
 
