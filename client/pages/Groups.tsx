@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserGroups } from "@/hooks/useGroups";
 import CreateGroupDialog from "@/components/groups/CreateGroupDialog";
 import GroupCard from "@/components/groups/GroupCard";
-import { Loader } from "lucide-react";
+import { Loader } from "@/components/ui/loader";
 
 export default function Groups() {
   const navigate = useNavigate();
