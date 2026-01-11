@@ -32,6 +32,17 @@ function expressPlugin(): Plugin {
     configureServer(server) {
       const app = createServer();
 
+      // Add middleware to redirect Netlify Functions to Express routes during dev
+      server.middlewares.use((req, res, next) => {
+        // Redirect /.netlify/functions/* to /api/*
+        if (req.url?.startsWith("/.netlify/functions/")) {
+          const apiPath = req.url.replace("/.netlify/functions/", "/api/");
+          req.url = apiPath;
+          console.log(`[DEV] Redirecting Netlify Function: ${req.url} → ${apiPath}`);
+        }
+        next();
+      });
+
       // Add Express app as middleware to Vite dev server
       server.middlewares.use(app);
     },
