@@ -215,9 +215,15 @@ export function TicketDetailModal({
                             {/* Sender Name with Role Logo */}
                             {isStaff && !isUser && (
                               <div className="flex items-center gap-1.5 px-1">
-                                <div className={`w-5 h-5 flex items-center justify-center ${badge.color}`}>
-                                  {badge.svg}
-                                </div>
+                                <img
+                                  src={badge.url}
+                                  alt={badge.label}
+                                  className="w-5 h-5 object-contain"
+                                  onError={(e) => {
+                                    // Fallback if image fails to load
+                                    (e.target as HTMLImageElement).style.display = "none";
+                                  }}
+                                />
                                 <span className="text-xs font-semibold text-foreground">
                                   {msg.senderName}
                                 </span>
