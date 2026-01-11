@@ -18,6 +18,7 @@ interface BroadcastMessageModalProps {
   senderName: string;
   senderId: string;
   users: User[];
+  onSuccess?: () => void;
 }
 
 export function BroadcastMessageModal({
