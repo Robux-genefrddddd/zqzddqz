@@ -194,6 +194,7 @@ export async function addMessageToTicket(
   message: string,
   senderProfileImage?: string,
   senderMemberRank?: "starter" | "creator" | "pro" | "studio",
+  userRole?: "member" | "partner" | "admin" | "founder" | "support",
 ): Promise<void> {
   try {
     const ticketRef = doc(db, TICKETS_COLLECTION, ticketId);
@@ -212,6 +213,7 @@ export async function addMessageToTicket(
         isRead: false,
         senderProfileImage,
         senderMemberRank,
+        userRole,
       };
 
       await updateDoc(ticketRef, {
