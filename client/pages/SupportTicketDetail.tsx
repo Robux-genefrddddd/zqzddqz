@@ -66,6 +66,28 @@ export default function SupportTicketDetail() {
       const ticketData = await getTicket(ticketId);
       if (ticketData) {
         setTicket(ticketData);
+
+        // Mark all messages as read
+        await markTicketMessagesAsRead(ticketId);
+
+        // Mark ticket-related notifications as read
+        if (user?.uid) {
+          try {
+            const notifications = await getUserNotifications(user.uid);
+            const ticketNotifications = notifications.filter(
+              (notif) =>
+                notif.type === "ticket_response" &&
+                notif.data?.ticketId === ticketId &&
+                !notif.read
+            );
+
+            for (const notif of ticketNotifications) {
+              await markNotificationAsRead(notif.id);
+            }
+          } catch (notifError) {
+            console.error("Error marking notifications as read:", notifError);
+          }
+        }
       }
     } catch (error) {
       console.error("Error loading ticket:", error);
