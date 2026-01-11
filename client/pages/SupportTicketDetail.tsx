@@ -282,11 +282,10 @@ export default function SupportTicketDetail() {
             className="bg-secondary/30 border border-border rounded-lg p-4 space-y-4 h-96 overflow-y-auto flex flex-col"
           >
             {ticket.messages.map((msg) => {
-              const roleBadge = getRoleBadge(msg.senderRole, msg.senderId);
+              const roleBadge = getRoleBadge(msg.senderRole, msg.senderMemberRank);
               const isCurrentUser = msg.senderId === user?.uid;
-              const senderProfile = userProfiles[msg.senderId];
               const profileImage =
-                senderProfile?.profileImage || DEFAULT_PROFILE_IMAGE;
+                msg.senderProfileImage || DEFAULT_PROFILE_IMAGE;
 
               return (
                 <div
